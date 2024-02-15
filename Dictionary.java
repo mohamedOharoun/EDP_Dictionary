@@ -31,11 +31,9 @@ public class Dictionary {
     public Object getValue(Object key) throws Exception {
 
         for (int i = 0; i < size; i++) {
-
             if (keys[i].equals(key)) {
                 return values[i];
             }
-
         }
 
         throw new Exception("Clave no encontrada en el diccionario.");
@@ -45,13 +43,9 @@ public class Dictionary {
     private void expandArrays() {
         int newCapacity;
         if(keys.length < 5000) {
-
             newCapacity = keys.length * 4;
-
         } else {
-
             newCapacity = keys.length * 2;
-
         }
 
         keys = Arrays.copyOf(keys, newCapacity);

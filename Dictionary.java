@@ -37,12 +37,23 @@ public class Dictionary {
         }
     }
 
-    public Object getElement(Object key) throws Exception {
-        int pseudoKey = key.hashCode() & mask;
+    public Object getElement(Object key) {
+        int hash = key.hashCode();
+        int pseudoKey = hash & mask;
         int tempIndex = indexes[pseudoKey];
-        if(tempIndex == UNUSED) {
-            throw new Exception("Key not found");
+        boolean stay = true;
+        while (stay) {
+            if(tempIndex == UNUSED) {
+                throw new RuntimeException("Key not found");
+            }
+            if(values[tempIndex].getHash() == key.hashCode()) {
+                stay = false;
+            } else {
+                hash >>= 5;
+                pseudoKey = (pseudoKey * 5 + hash + 1) & mask;
+                tempIndex = indexes[pseudoKey];            }
         }
+        
         return values[tempIndex];
     }
 }

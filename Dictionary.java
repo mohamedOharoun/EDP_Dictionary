@@ -2,55 +2,39 @@ import java.util.Arrays;
 
 public class Dictionary {
     
-    private static final int CAPACITY_INITIAL = 10;
-
-    private Object[] keys;
-    private Object[] values;
-    private int size;
+    private int capacity = 8;
+    private int index;
+    private int[] indexes;
+    private Entry[] values;
+    private int mask;
 
     public Dictionary() {
-
-        keys = new Object[CAPACITY_INITIAL];
-        values = new Object[CAPACITY_INITIAL];
-        size = 0;
-
+        indexes = new int[capacity];
+        values = new Entry[(int) Math.round(capacity * (2.0/3))];
+        index = 0;
+        mask = capacity - 1;
     }
 
-    public void addElement(Object key, Object value) {
-
-        if (size == (int) keys.length * 2/3) {
-            expandArrays();
-        }
-
-        keys[size * 4] = key;
-        values[size] = value;
-        size++;
-
-    }
-
-    public Object getValue(Object key) throws Exception {
-
-        for (int i = 0; i < size; i++) {
-            if (keys[i].equals(key)) {
-                return values[i];
-            }
-        }
-
-        throw new Exception("Clave no encontrada en el diccionario.");
-
-    }
-
-    private void expandArrays() {
-        int newCapacity;
-        if(keys.length < 5000) {
-            newCapacity = keys.length * 4;
+    public void addElement(Entry value) {
+        int pseudoKey = value.getHash() & mask;
+        if(indexes[pseudoKey] == 0) {
+            indexes[pseudoKey] = ++index;
+            values[index - 1] = value;
         } else {
-            newCapacity = keys.length * 2;
+            int tempIndex = indexes[pseudoKey];
+            if(values[tempIndex - 1].getHash() == value.getHash()) {
+                values[tempIndex - 1] = value;
+            } 
         }
-
-        keys = Arrays.copyOf(keys, newCapacity);
-        values = Arrays.copyOf(values, newCapacity);
-
     }
 
+    public Object getElement(Object key) throws Exception {
+        int pseudoKey = key.hashCode() & mask;
+        int tempIndex = indexes[pseudoKey];
+        if(tempIndex == 0) {
+            throw new Exception("Key not found");
+        }
+        return values[tempIndex - 1];
+    }
 }
+

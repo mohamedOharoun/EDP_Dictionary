@@ -3,14 +3,14 @@ import java.util.Arrays;
 public class Dictionary {
     private final int UNUSED = -1;
     private final int DUMMY = -2;
-    private int capacity = 8;
+    private final int initialCapacity = 8;
     private int index;
     private int[] indexes;
     private Entry[] values;
     private int mask;
 
     public Dictionary() {
-        setDictionary(capacity);   
+        setDictionary(initialCapacity);   
     }
 
     private void setDictionary(int newCapacity) {
@@ -23,7 +23,7 @@ public class Dictionary {
 
     private void resize() {
         Entry[] tempValues = values;
-        setDictionary(values.length << 2);
+        setDictionary(indexes.length << 1);
         for(int i = 0; i < tempValues.length; i++) {
             if(tempValues[i] != null) {
                 addElement(tempValues[i]);
@@ -51,7 +51,7 @@ public class Dictionary {
                     values[indexes[pseudoKey]] = newEntry;
                     stay = false;
                 }
-                hash >>= 5;
+                hash >>= 4;
                 pseudoKey = (pseudoKey * 5 + hash + 1) & mask;
             }
         }

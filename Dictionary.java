@@ -99,5 +99,43 @@ public class Dictionary {
             }
         }
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("{");
+        Entry temp;
+        for(int i = 0; i < index - 1; i++) {
+            temp = values[i];
+            if(temp != null) {
+                if(temp.getKey() instanceof Number) {
+                    sb.append(temp.getKey() + ": ");
+                } else {
+                    sb.append(String.format("'%s': ", temp.getKey()));
+                }
+
+                if(temp.getValue() instanceof Number) {
+                    sb.append(temp.getValue() + ", ");
+                } else {
+                    sb.append(String.format("'%s', ", temp.getValue()));
+                }
+            }
+        }
+        temp = values[index - 1];
+        if(temp.getKey() instanceof Number) {
+            sb.append(temp.getKey() + ": ");
+        } else {
+            sb.append(String.format("'%s': ", temp.getKey()));
+        }
+
+        if(temp.getValue() instanceof Number) {
+            sb.append(temp.getValue() + "");
+        } else {
+            sb.append(String.format("'%s'", temp.getValue()));
+        }
+        sb.append("}");
+
+        return sb.toString();
+    }
 }
 

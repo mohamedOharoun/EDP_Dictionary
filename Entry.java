@@ -1,6 +1,6 @@
 class Entry {
-    private Object key;
-    private Object value;
+    private final Object key;
+    private final Object value;
 
     public Entry(Object key, Object value) {
         this.key = key;

@@ -30,6 +30,7 @@ public class Dictionary {
             } else {
                 if(values[indexes[pseudoKey]].getHash() == newEntry.getHash()) {
                     values[indexes[pseudoKey]] = newEntry;
+                    stay = false;
                 }
                 hash >>= 5;
                 pseudoKey = (pseudoKey * 5 + hash + 1) & mask;

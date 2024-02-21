@@ -10,11 +10,25 @@ public class Dictionary {
     private int mask;
 
     public Dictionary() {
-        indexes = new int[capacity];
+        setDictionary(capacity);   
+    }
+
+    private void setDictionary(int newCapacity) {
+        indexes = new int[newCapacity];
         Arrays.fill(indexes, UNUSED);
-        values = new Entry[(int) Math.round(capacity * (2.0/3))];
+        values = new Entry[(int) Math.round(newCapacity * (2.0/3))];
         index = 0;
-        mask = capacity - 1;
+        mask = newCapacity - 1;
+    }
+
+    private void resize() {
+        Entry[] tempValues = values;
+        setDictionary(values.length << 2);
+        for(int i = 0; i < tempValues.length; i++) {
+            if(tempValues[i] != null) {
+                addElement(tempValues[i]);
+            }
+        }
     }
 
     public void addElement(Entry newEntry) {
@@ -23,9 +37,14 @@ public class Dictionary {
         boolean stay = true;
         while(stay) {
             if(indexes[pseudoKey] == UNUSED) {
-                indexes[pseudoKey] = index;
-                values[index] = newEntry;
-                index++;
+                if(index == values.length) {
+                    resize();
+                    addElement(newEntry);
+                } else {
+                    indexes[pseudoKey] = index;
+                    values[index] = newEntry;
+                    index++;
+                }
                 stay = false;
             } else {
                 if(values[indexes[pseudoKey]].getHash() == newEntry.getHash()) {
@@ -40,6 +59,7 @@ public class Dictionary {
 
     public Object getElement(Object key) {
         int hash = key.hashCode();
+        final int keyHash = hash;
         int pseudoKey = hash & mask;
         int tempIndex = indexes[pseudoKey];
         boolean stay = true;
@@ -47,7 +67,7 @@ public class Dictionary {
             if(tempIndex == UNUSED) {
                 throw new RuntimeException("Key not found");
             }
-            if(values[tempIndex].getHash() == key.hashCode()) {
+            if(values[tempIndex].getHash() == keyHash) {
                 stay = false;
             } else {
                 hash >>= 5;
@@ -60,6 +80,7 @@ public class Dictionary {
 
     public void deleteElement(Object key) {
         int hash = key.hashCode();
+        final int keyHash = hash;
         int pseudoKey = hash & mask;
         int tempIndex = indexes[pseudoKey];
         boolean stay = true;
@@ -67,7 +88,7 @@ public class Dictionary {
             if(tempIndex == UNUSED) {
                 throw new RuntimeException("Key not found");
             }
-            if(values[tempIndex].getHash() == key.hashCode()) {
+            if(values[tempIndex].getHash() == keyHash) {
                 indexes[pseudoKey] = DUMMY;
                 values[tempIndex] = null;
                 stay = false;

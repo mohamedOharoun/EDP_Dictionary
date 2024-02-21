@@ -14,7 +14,7 @@ class Entry {
     }
 
     public Object getKey() {
-        return this.value;
+        return this.key;
     }
 
     public int getHash() {

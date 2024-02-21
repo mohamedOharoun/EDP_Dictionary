@@ -56,5 +56,26 @@ public class Dictionary {
         
         return values[tempIndex];
     }
+
+    public void deleteElement(Object key) {
+        int hash = key.hashCode();
+        int pseudoKey = hash & mask;
+        int tempIndex = indexes[pseudoKey];
+        boolean stay = true;
+        while (stay) {
+            if(tempIndex == UNUSED) {
+                throw new RuntimeException("Key not found");
+            }
+            if(values[tempIndex].getHash() == key.hashCode()) {
+                indexes[pseudoKey] = DUMMY;
+                values[tempIndex] = null;
+                stay = false;
+            } else {
+                hash >>= 5;
+                pseudoKey = (pseudoKey * 5 + hash + 1) & mask;
+                tempIndex = indexes[pseudoKey];            
+            }
+        }
+    }
 }
 

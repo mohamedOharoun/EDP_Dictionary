@@ -124,24 +124,30 @@ public class Dictionary {
                 }
 
                 if(temp.getValue() instanceof Number) {
-                    sb.append(temp.getValue() + ", ");
+                    sb.append(temp.getValue() + "");
                 } else {
-                    sb.append(String.format("'%s', ", temp.getValue()));
+                    sb.append(String.format("'%s'", temp.getValue()));
+                }
+                if(values[i+1] != null) {
+                    sb.append(", ");
                 }
             }
         }
         temp = values[index - 1];
-        if(temp.getKey() instanceof Number) {
-            sb.append(temp.getKey() + ": ");
-        } else {
-            sb.append(String.format("'%s': ", temp.getKey()));
+        if(temp != null) {
+            if(temp.getKey() instanceof Number) {
+                sb.append(temp.getKey() + ": ");
+            } else {
+                sb.append(String.format("'%s': ", temp.getKey()));
+            }
+    
+            if(temp.getValue() instanceof Number) {
+                sb.append(temp.getValue() + "");
+            } else {
+                sb.append(String.format("'%s'", temp.getValue()));
+            }
         }
-
-        if(temp.getValue() instanceof Number) {
-            sb.append(temp.getValue() + "");
-        } else {
-            sb.append(String.format("'%s'", temp.getValue()));
-        }
+        
         sb.append("}");
 
         return sb.toString();

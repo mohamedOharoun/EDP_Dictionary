@@ -50,7 +50,7 @@ public class Dictionary {
                 }
                 stay = false;
             } else {
-                if(values[indexes[pseudoKey]].getHash() == newEntry.getHash()) {
+                if(indexes[pseudoKey] != DUMMY && values[indexes[pseudoKey]].getHash() == newEntry.getHash()) {
                     values[indexes[pseudoKey]] = newEntry;
                     stay = false;
                 }

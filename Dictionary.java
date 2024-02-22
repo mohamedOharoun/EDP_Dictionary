@@ -8,6 +8,7 @@ public class Dictionary {
     private int[] indexes;
     private Entry[] values;
     private int mask;
+    private int n_entries;
 
     public Dictionary() {
         setDictionary(initialCapacity);   
@@ -19,6 +20,7 @@ public class Dictionary {
         values = new Entry[(int) Math.round(newCapacity * (2.0/3))];
         index = 0;
         mask = newCapacity - 1;
+        n_entries = 0;
     }
 
     private void resize() {
@@ -44,6 +46,7 @@ public class Dictionary {
                     indexes[pseudoKey] = index;
                     values[index] = newEntry;
                     index++;
+                    n_entries++;
                 }
                 stay = false;
             } else {
@@ -51,10 +54,14 @@ public class Dictionary {
                     values[indexes[pseudoKey]] = newEntry;
                     stay = false;
                 }
-                hash >>= 4;
+                hash >>= 5;
                 pseudoKey = (pseudoKey * 5 + hash + 1) & mask;
             }
         }
+    }
+
+    public int length() {
+        return n_entries;
     }
 
     public Object getElement(Object key) {
@@ -67,14 +74,15 @@ public class Dictionary {
             if(tempIndex == UNUSED) {
                 throw new RuntimeException("Key not found");
             }
-            if(values[tempIndex].getHash() == keyHash) {
+            if(tempIndex != DUMMY && values[tempIndex].getHash() == keyHash) {
                 stay = false;
             } else {
                 hash >>= 5;
                 pseudoKey = (pseudoKey * 5 + hash + 1) & mask;
-                tempIndex = indexes[pseudoKey];            }
+                tempIndex = indexes[pseudoKey];
+
+            }
         }
-        
         return values[tempIndex];
     }
 
@@ -92,6 +100,7 @@ public class Dictionary {
                 indexes[pseudoKey] = DUMMY;
                 values[tempIndex] = null;
                 stay = false;
+                n_entries--;
             } else {
                 hash >>= 5;
                 pseudoKey = (pseudoKey * 5 + hash + 1) & mask;

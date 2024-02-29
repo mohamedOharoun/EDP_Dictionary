@@ -4,7 +4,7 @@ public class Dictionary {
     private final int initialCapacity = 8;
     private int index;
     private Integer[] indexes;
-    private ValuesList values;
+    private ValuesList values = new ValuesList();
     private int mask;
     private int n_entries;
 
@@ -14,8 +14,7 @@ public class Dictionary {
 
     private void setDictionary(int newCapacity) {
         indexes = new Integer[newCapacity];
-        values = new ValuesList(new Entry[(int) Math.round(newCapacity * (2.0/3))]);
-        System.out.println(values.len());
+        values.setArray(new Entry[(int) Math.round(newCapacity * (2.0/3))]);
         index = 0;
         mask = newCapacity - 1;
         n_entries = 0;
@@ -46,7 +45,7 @@ public class Dictionary {
                     addElement(newEntry);
                 } else {
                     indexes[pseudoKey] = index;
-                    values.add(index, newEntry);
+                    values.add(newEntry);
                     index++;
                     n_entries++;
                 }
@@ -87,7 +86,7 @@ public class Dictionary {
         return values.get(tempIndex);
     }
 
-    public void deleteElement(Object key) {
+    public int deleteElement(Object key) {
         int hash = key.hashCode();
         final int keyHash = hash;
         int pseudoKey = hash & mask;
@@ -95,7 +94,7 @@ public class Dictionary {
         boolean stay = true;
         while (stay) {
             if(tempIndex == UNUSED) {
-                throw new RuntimeException("Key not found");
+                return -1;
             }
             if(values.get(tempIndex).getHash() == keyHash) {
                 indexes[pseudoKey] = DUMMY;
@@ -108,6 +107,8 @@ public class Dictionary {
                 tempIndex = indexes[pseudoKey];            
             }
         }
+
+        return 0;
     }
 
     @Override
@@ -152,6 +153,10 @@ public class Dictionary {
         sb.append("}");
 
         return sb.toString();
+    }
+
+    public Values values() {
+        return new Values(values);
     }
 
     public Entry popitem() {

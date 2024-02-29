@@ -1,11 +1,9 @@
-import java.util.Arrays;
-
 public class Dictionary {
-    private final int UNUSED = -1;
-    private final int DUMMY = -2;
+    private final Object UNUSED = null;
+    private final Integer DUMMY = -2;
     private final int initialCapacity = 8;
     private int index;
-    private int[] indexes;
+    private Integer[] indexes;
     private Entry[] values;
     private int mask;
     private int n_entries;
@@ -15,12 +13,15 @@ public class Dictionary {
     }
 
     private void setDictionary(int newCapacity) {
-        indexes = new int[newCapacity];
-        Arrays.fill(indexes, UNUSED);
+        indexes = new Integer[newCapacity];
         values = new Entry[(int) Math.round(newCapacity * (2.0/3))];
         index = 0;
         mask = newCapacity - 1;
         n_entries = 0;
+    }
+
+    public void clear() {
+        setDictionary(initialCapacity);
     }
 
     private void resize() {
@@ -34,7 +35,7 @@ public class Dictionary {
     }
 
     public void addElement(Entry newEntry) {
-        int hash = newEntry.getHash();
+        int hash = Math.abs(newEntry.getHash());
         int pseudoKey = hash & mask;
         boolean stay = true;
         while(stay) {
@@ -65,10 +66,10 @@ public class Dictionary {
     }
 
     public Object getElement(Object key) {
-        int hash = key.hashCode();
+        int hash = Math.abs(key.hashCode());
         final int keyHash = hash;
         int pseudoKey = hash & mask;
-        int tempIndex = indexes[pseudoKey];
+        Integer tempIndex = indexes[pseudoKey];
         boolean stay = true;
         while (stay) {
             if(tempIndex == UNUSED) {
@@ -90,7 +91,7 @@ public class Dictionary {
         int hash = key.hashCode();
         final int keyHash = hash;
         int pseudoKey = hash & mask;
-        int tempIndex = indexes[pseudoKey];
+        Integer tempIndex = indexes[pseudoKey];
         boolean stay = true;
         while (stay) {
             if(tempIndex == UNUSED) {

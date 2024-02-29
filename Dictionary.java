@@ -14,8 +14,7 @@ public class Dictionary {
 
     private void setDictionary(int newCapacity) {
         indexes = new Integer[newCapacity];
-        values = new ValuesList(new Entry[(int) Math.round(newCapacity * (2.0/3))]);
-        System.out.println(values.len());
+        values.setArray(new Entry[(int) Math.round(newCapacity * (2.0/3))]);
         index = 0;
         mask = newCapacity - 1;
         n_entries = 0;

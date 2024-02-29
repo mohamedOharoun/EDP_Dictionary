@@ -20,34 +20,6 @@ public class Dictionary {
         n_entries = 0;
     }
 
-    public void clear() {
-        setDictionary(initialCapacity);
-    }
-
-    private int upper_power_of_two(int v) {
-        v--;
-        v |= v >> 1;
-        v |= v >> 2;
-        v |= v >> 4;
-        v |= v >> 8;
-        v |= v >> 16;
-        v++;
-        return v;
-    }
-
-    public Dictionary copy() {
-        Dictionary dicTemp = new Dictionary();
-        dicTemp.setDictionary(upper_power_of_two(upper_power_of_two(values.size())));
-        Entry currentEntry;
-        for(int i = 0; i < index; i++) {
-            currentEntry = values.get(i);
-            if(currentEntry != null) {
-                dicTemp.addElement(new Entry(currentEntry.getKey(), currentEntry.getValue(), currentEntry.getHash()));
-            }
-        }
-        return dicTemp;
-    }
-
     private void resize() {
         Entry[] tempValues = values.getAll();
         setDictionary(indexes.length << 1);
@@ -181,6 +153,34 @@ public class Dictionary {
 
     public Values values() {
         return new Values(values);
+    }
+
+    public void clear() {
+        setDictionary(initialCapacity);
+    }
+
+    private int upper_power_of_two(int v) {
+        v--;
+        v |= v >> 1;
+        v |= v >> 2;
+        v |= v >> 4;
+        v |= v >> 8;
+        v |= v >> 16;
+        v++;
+        return v;
+    }
+
+    public Dictionary copy() {
+        Dictionary dicTemp = new Dictionary();
+        dicTemp.setDictionary(upper_power_of_two(upper_power_of_two(values.size())));
+        Entry currentEntry;
+        for(int i = 0; i < index; i++) {
+            currentEntry = values.get(i);
+            if(currentEntry != null) {
+                dicTemp.addElement(new Entry(currentEntry.getKey(), currentEntry.getValue(), currentEntry.getHash()));
+            }
+        }
+        return dicTemp;
     }
 
     public Entry popitem() {

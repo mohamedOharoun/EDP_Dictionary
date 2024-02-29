@@ -153,5 +153,16 @@ public class Dictionary {
 
         return sb.toString();
     }
+
+    public Entry popitem() {
+        if (n_entries == 0) {
+            throw new RuntimeException("Dictionary is empty.");
+        }
+        int i = index;
+        while (values.get(i) == null) {i--;}
+        Entry item = values.get(i);
+        deleteElement(item.getKey());
+        return item;
+    }
 }
 

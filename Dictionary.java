@@ -15,7 +15,6 @@ public class Dictionary {
     private void setDictionary(int newCapacity) {
         indexes = new Integer[newCapacity];
         values = new ValuesList(new Entry[(int) Math.round(newCapacity * (2.0/3))]);
-        System.out.println(values.len());
         index = 0;
         mask = newCapacity - 1;
         n_entries = 0;
@@ -23,6 +22,18 @@ public class Dictionary {
 
     public void clear() {
         setDictionary(initialCapacity);
+    }
+
+    public Dictionary copy() {
+        Dictionary dicTemp = new Dictionary();
+        for(int i = 0; i < values.len(); i++) {
+            Entry currentEntry = values.get(i);
+            if(currentEntry != null) {
+                Entry entry = new Entry(currentEntry.getKey(), currentEntry.getValue());
+                dicTemp.addElement(entry);
+            }
+        }
+        return dicTemp;
     }
 
     private void resize() {

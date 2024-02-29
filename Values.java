@@ -8,7 +8,7 @@ public class Values {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        for(int i = 0; i < values.size(); i++) {
+        for(int i = 0; i < values.length(); i++) {
             if(values.get(i) != null) {
                 sb.append(values.get(i).getValue());
                 sb.append(", ");

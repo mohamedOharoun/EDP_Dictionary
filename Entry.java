@@ -9,6 +9,12 @@ class Entry {
         this.hash = key.hashCode();
     }
 
+    public Entry(Object key, Object value, int hash) {
+        this.key = key;
+        this.value = value;
+        this.hash = hash;
+    }
+
     public Object getValue() {
         return this.value;
     }

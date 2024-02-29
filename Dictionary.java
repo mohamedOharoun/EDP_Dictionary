@@ -24,13 +24,25 @@ public class Dictionary {
         setDictionary(initialCapacity);
     }
 
+    private int upper_power_of_two(int v) {
+        v--;
+        v |= v >> 1;
+        v |= v >> 2;
+        v |= v >> 4;
+        v |= v >> 8;
+        v |= v >> 16;
+        v++;
+        return v;
+    }
+
     public Dictionary copy() {
         Dictionary dicTemp = new Dictionary();
-        for(int i = 0; i < values.len(); i++) {
-            Entry currentEntry = values.get(i);
+        dicTemp.setDictionary(upper_power_of_two(upper_power_of_two(values.size())));
+        Entry currentEntry;
+        for(int i = 0; i < index; i++) {
+            currentEntry = values.get(i);
             if(currentEntry != null) {
-                Entry entry = new Entry(currentEntry.getKey(), currentEntry.getValue());
-                dicTemp.addElement(entry);
+                dicTemp.addElement(new Entry(currentEntry.getKey(), currentEntry.getValue(), currentEntry.getHash()));
             }
         }
         return dicTemp;
@@ -47,12 +59,12 @@ public class Dictionary {
     }
 
     public void addElement(Entry newEntry) {
-        int hash = Math.abs(newEntry.getHash());
+        int hash = newEntry.getHash();
         int pseudoKey = hash & mask;
         boolean stay = true;
         while(stay) {
             if(indexes[pseudoKey] == UNUSED) {
-                if(index == values.len()) {
+                if(index == values.capacity()) {
                     resize();
                     addElement(newEntry);
                 } else {
@@ -67,7 +79,7 @@ public class Dictionary {
                     values.add(indexes[pseudoKey], newEntry);
                     stay = false;
                 }
-                hash >>= 5;
+                hash >>>= 5;
                 pseudoKey = (pseudoKey * 5 + hash + 1) & mask;
             }
         }
@@ -78,7 +90,7 @@ public class Dictionary {
     }
 
     public Object getElement(Object key) {
-        int hash = Math.abs(key.hashCode());
+        int hash = key.hashCode();
         final int keyHash = hash;
         int pseudoKey = hash & mask;
         Integer tempIndex = indexes[pseudoKey];
@@ -90,7 +102,7 @@ public class Dictionary {
             if(tempIndex != DUMMY && values.get(tempIndex).getHash() == keyHash) {
                 stay = false;
             } else {
-                hash >>= 5;
+                hash >>>= 5;
                 pseudoKey = (pseudoKey * 5 + hash + 1) & mask;
                 tempIndex = indexes[pseudoKey];
             }
@@ -108,13 +120,13 @@ public class Dictionary {
             if(tempIndex == UNUSED) {
                 return -1;
             }
-            if(values.get(tempIndex).getHash() == keyHash) {
+            if(tempIndex != DUMMY && values.get(tempIndex).getHash() == keyHash) {
                 indexes[pseudoKey] = DUMMY;
                 values.delete(tempIndex);
                 stay = false;
                 n_entries--;
             } else {
-                hash >>= 5;
+                hash >>>= 5;
                 pseudoKey = (pseudoKey * 5 + hash + 1) & mask;
                 tempIndex = indexes[pseudoKey];            
             }
@@ -131,16 +143,16 @@ public class Dictionary {
         for(int i = 0; i < index - 1; i++) {
             temp = values.get(i);
             if(temp != null) {
-                if(temp.getKey() instanceof Number) {
-                    sb.append(temp.getKey() + ": ");
-                } else {
+                if(temp.getKey() instanceof String || temp.getKey() instanceof Character) {
                     sb.append(String.format("'%s': ", temp.getKey()));
+                } else {
+                    sb.append(temp.getKey() + ": ");
                 }
 
-                if(temp.getValue() instanceof Number) {
-                    sb.append(temp.getValue() + "");
-                } else {
+                if(temp.getValue() instanceof String || temp.getValue() instanceof Character) {
                     sb.append(String.format("'%s'", temp.getValue()));
+                } else {
+                    sb.append(temp.getValue() + "");
                 }
                 if(values.get(i + 1) != null) {
                     sb.append(", ");

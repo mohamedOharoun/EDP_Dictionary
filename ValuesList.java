@@ -17,6 +17,7 @@ public class ValuesList {
 
     public void delete(int i) {
         values[i] = null;
+        n_entries--;
     }
 
     public void add(Entry obj) {
@@ -36,12 +37,16 @@ public class ValuesList {
         n_entries++;
     }
 
-    public int len() {
+    public int capacity() {
         return values.length;
     }
 
-    public int size() {
+    public int length() {
         return index;
+    }
+
+    public int size() {
+        return n_entries;
     }
 
     public Entry[] getAll() {

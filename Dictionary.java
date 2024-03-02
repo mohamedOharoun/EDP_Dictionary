@@ -3,8 +3,8 @@ public class Dictionary {
     private final Integer DUMMY = -2;
     private final int initialCapacity = 8;
     private int index;
-    private Integer[] indexes;
-    private ValuesList values = new ValuesList();
+    private IndexesList indexes = new IndexesList(null);
+    private ValuesList values = new ValuesList(null);
     private int mask;
 
     public Dictionary() {
@@ -12,7 +12,7 @@ public class Dictionary {
     }
 
     private void setDictionary(int newCapacity) {
-        indexes = new Integer[newCapacity];
+        indexes.setArray(new Integer[newCapacity]);
         values.setArray(new Entry[(int) Math.round(newCapacity * (2.0/3))]);
         index = 0;
         mask = newCapacity - 1;
@@ -20,7 +20,7 @@ public class Dictionary {
 
     private void resize() {
         Entry[] tempValues = values.getAll();
-        setDictionary(indexes.length << 1);
+        setDictionary(indexes.length() << 1);
         for(int i = 0; i < tempValues.length; i++) {
             if(tempValues[i] != null) {
                 addElement(tempValues[i]);
@@ -33,19 +33,19 @@ public class Dictionary {
         int pseudoKey = hash & mask;
         boolean stay = true;
         while(stay) {
-            if(indexes[pseudoKey] == UNUSED) {
+            if(indexes.get(pseudoKey) == UNUSED) {
                 if(index == values.capacity()) {
                     resize();
                     addElement(newEntry);
                 } else {
-                    indexes[pseudoKey] = index;
+                    indexes.put(pseudoKey, index);
                     values.add(newEntry);
                     index++;
                 }
                 stay = false;
             } else {
-                if(indexes[pseudoKey] != DUMMY && values.get(indexes[pseudoKey]).getHash() == newEntry.getHash()) {
-                    values.add(indexes[pseudoKey], newEntry);
+                if(indexes.get(pseudoKey) != DUMMY && values.get(indexes.get(pseudoKey)).getHash() == newEntry.getHash()) {
+                    values.add(indexes.get(pseudoKey), newEntry);
                     stay = false;
                 }
                 hash >>>= 5;
@@ -62,7 +62,7 @@ public class Dictionary {
         int hash = key.hashCode();
         final int keyHash = hash;
         int pseudoKey = hash & mask;
-        Integer tempIndex = indexes[pseudoKey];
+        Integer tempIndex = indexes.get(pseudoKey);
         boolean stay = true;
         while (stay) {
             if(tempIndex == UNUSED) {
@@ -73,7 +73,7 @@ public class Dictionary {
             } else {
                 hash >>>= 5;
                 pseudoKey = (pseudoKey * 5 + hash + 1) & mask;
-                tempIndex = indexes[pseudoKey];
+                tempIndex = indexes.get(pseudoKey);
             }
         }
         return values.get(tempIndex);
@@ -83,20 +83,20 @@ public class Dictionary {
         int hash = key.hashCode();
         final int keyHash = hash;
         int pseudoKey = hash & mask;
-        Integer tempIndex = indexes[pseudoKey];
+        Integer tempIndex = indexes.get(pseudoKey);
         boolean stay = true;
         while (stay) {
             if(tempIndex == UNUSED) {
                 return -1;
             }
             if(tempIndex != DUMMY && values.get(tempIndex).getHash() == keyHash) {
-                indexes[pseudoKey] = DUMMY;
+                indexes.put(pseudoKey, DUMMY);
                 values.delete(tempIndex);
                 stay = false;
             } else {
                 hash >>>= 5;
                 pseudoKey = (pseudoKey * 5 + hash + 1) & mask;
-                tempIndex = indexes[pseudoKey];            
+                tempIndex = indexes.get(pseudoKey);            
             }
         }
 

@@ -3,10 +3,6 @@ public class ValuesList {
     private int index = 0;
     private int n_entries = 0;
 
-    public ValuesList() {
-        values = new Entry[0];
-    }
-
     public ValuesList(Entry[] values) {
         this.values = values;
     }

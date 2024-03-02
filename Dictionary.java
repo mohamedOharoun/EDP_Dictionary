@@ -6,7 +6,6 @@ public class Dictionary {
     private Integer[] indexes;
     private ValuesList values = new ValuesList();
     private int mask;
-    private int n_entries;
 
     public Dictionary() {
         setDictionary(initialCapacity);   
@@ -17,7 +16,6 @@ public class Dictionary {
         values.setArray(new Entry[(int) Math.round(newCapacity * (2.0/3))]);
         index = 0;
         mask = newCapacity - 1;
-        n_entries = 0;
     }
 
     private void resize() {
@@ -43,7 +41,6 @@ public class Dictionary {
                     indexes[pseudoKey] = index;
                     values.add(newEntry);
                     index++;
-                    n_entries++;
                 }
                 stay = false;
             } else {
@@ -58,7 +55,7 @@ public class Dictionary {
     }
 
     public int length() {
-        return n_entries;
+        return values.size();
     }
 
     public Object getElement(Object key) {
@@ -96,7 +93,6 @@ public class Dictionary {
                 indexes[pseudoKey] = DUMMY;
                 values.delete(tempIndex);
                 stay = false;
-                n_entries--;
             } else {
                 hash >>>= 5;
                 pseudoKey = (pseudoKey * 5 + hash + 1) & mask;
@@ -184,7 +180,7 @@ public class Dictionary {
     }
 
     public Entry popitem() {
-        if (n_entries == 0) {
+        if (values.size() == 0) {
             throw new RuntimeException("Dictionary is empty.");
         }
         int i = index;

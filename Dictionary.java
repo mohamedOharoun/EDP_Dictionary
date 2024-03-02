@@ -3,8 +3,8 @@ public class Dictionary {
     private final Integer DUMMY = -2;
     private final int initialCapacity = 8;
     private int index;
-    private IndexesList indexes = new IndexesList(null);
-    private ValuesList values = new ValuesList(null);
+    private final IndexesList indexes = new IndexesList(null);
+    private final ValuesList values = new ValuesList(null);
     private int mask;
 
     public Dictionary() {

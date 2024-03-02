@@ -151,6 +151,10 @@ public class Dictionary {
         return new Values(values);
     }
 
+    public Keys keys() {
+        return new Keys(indexes, values);
+    }
+
     public void clear() {
         setDictionary(initialCapacity);
     }

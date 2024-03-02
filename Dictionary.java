@@ -155,7 +155,7 @@ public class Dictionary {
         setDictionary(initialCapacity);
     }
 
-    private int upper_power_of_two(int v) {
+    private int getUpperPowerOfTwo(int v) {
         v--;
         v |= v >> 1;
         v |= v >> 2;
@@ -168,7 +168,7 @@ public class Dictionary {
 
     public Dictionary copy() {
         Dictionary dicTemp = new Dictionary();
-        dicTemp.setDictionary(upper_power_of_two(upper_power_of_two(values.size())));
+        dicTemp.setDictionary(getUpperPowerOfTwo(values.size()) << 1);
         Entry currentEntry;
         for(int i = 0; i < index; i++) {
             currentEntry = values.get(i);

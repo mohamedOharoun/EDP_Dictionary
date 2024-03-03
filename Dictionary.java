@@ -1,4 +1,6 @@
-public class Dictionary {
+import java.util.Iterator;
+
+public class Dictionary implements Iterable<Object>{
     private final Object UNUSED = null;
     private final Integer DUMMY = -2;
     private final int initialCapacity = 8;
@@ -26,6 +28,11 @@ public class Dictionary {
                 addElement(tempValues[i]);
             }
         }
+    }
+
+    @Override
+    public Iterator<Object> iterator() {
+        return new Keys(indexes, values).iterator();
     }
 
     public void addElement(Entry newEntry) {
@@ -153,6 +160,10 @@ public class Dictionary {
 
     public Keys keys() {
         return new Keys(indexes, values);
+    }
+
+    public Items items() {
+        return new Items(indexes, values);
     }
 
     public void clear() {

@@ -1,16 +1,16 @@
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class Keys implements Iterable<Object>{
+public class Items implements Iterable<Object>{
     //private IndexesList indexes;
     private ValuesList values;
 
     @Override
     public Iterator<Object> iterator() {
-        return new KeysIterator(this);
+        return new ItemsIterator(this);
     }
 
-    public Keys(IndexesList indexes, ValuesList values) {
+    public Items(IndexesList indexes, ValuesList values) {
         //this.indexes = indexes;
         this.values = values;
     }
@@ -19,20 +19,20 @@ public class Keys implements Iterable<Object>{
         return values.size();
     }
 
-    public class KeysIterator implements Iterator<Object> {
-        Keys keys;
+    public class ItemsIterator implements Iterator<Object> {
+        Items items;
         int index;
 
-        public KeysIterator(Keys keys){
-            this.keys = keys;
+        public ItemsIterator(Items items){
+            this.items = items;
             this.index = 0;
         }
 
         @Override
         public boolean hasNext() {
-            if(index >= keys.values.length()) return false;
-            while(index <= keys.values.length()) {
-                if(keys.values.get(index) != null) return true;
+            if(index >= items.values.length()) return false;
+            while(index <= items.values.length()) {
+                if(items.values.get(index) != null) return true;
                 index++;
             }
             return false;
@@ -41,7 +41,7 @@ public class Keys implements Iterable<Object>{
         @Override
         public Object next() {
             if (hasNext()) {
-                return keys.values.get(index++).getKey();
+                return (Pair) items.values.get(index++);
             }
             throw new NoSuchElementException();
         }

@@ -30,6 +30,10 @@ public class Dictionary implements Iterable<Object>{
         }
     }
 
+    private int getNextIndex(int index, int hash) {
+        return (index * 5 + hash + 1) & mask;
+    }
+
     @Override
     public Iterator<Object> iterator() {
         return new Keys(indexes, values).iterator();
@@ -56,7 +60,7 @@ public class Dictionary implements Iterable<Object>{
                     stay = false;
                 }
                 hash >>>= 5;
-                pseudoKey = (pseudoKey * 5 + hash + 1) & mask;
+                pseudoKey = getNextIndex(pseudoKey, hash);
             }
         }
     }
@@ -79,7 +83,7 @@ public class Dictionary implements Iterable<Object>{
                 stay = false;
             } else {
                 hash >>>= 5;
-                pseudoKey = (pseudoKey * 5 + hash + 1) & mask;
+                pseudoKey = getNextIndex(pseudoKey, hash);
                 tempIndex = indexes.get(pseudoKey);
             }
         }
@@ -102,7 +106,7 @@ public class Dictionary implements Iterable<Object>{
                 stay = false;
             } else {
                 hash >>>= 5;
-                pseudoKey = (pseudoKey * 5 + hash + 1) & mask;
+                pseudoKey = getNextIndex(pseudoKey, hash);
                 tempIndex = indexes.get(pseudoKey);            
             }
         }

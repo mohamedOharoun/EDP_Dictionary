@@ -27,6 +27,7 @@ public class Values implements Iterable<Object>{
 
     public boolean contains(Object other) {
         for(int i = 0; i < values.length(); i++) {
+            if(values.get(i) == null) continue;
             if(other.equals(values.get(i).getValue())) return true;
         }
         return false;

@@ -187,6 +187,7 @@ public class Dictionary implements Iterable<Object>{
 
     public Dictionary copy() {
         Dictionary dicTemp = new Dictionary();
+        //TODO: Añadir código para decidir si múltiplico getUpperOfTwo
         dicTemp.setDictionary(getUpperPowerOfTwo(values.size()) << 1);
         Entry currentEntry;
         for(int i = 0; i < index; i++) {
@@ -209,4 +210,3 @@ public class Dictionary implements Iterable<Object>{
         return item;
     }
 }
-

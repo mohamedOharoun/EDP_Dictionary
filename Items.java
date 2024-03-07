@@ -41,7 +41,7 @@ public class Items implements Iterable<Object>{
         @Override
         public Object next() {
             if (hasNext()) {
-                return (Pair) items.values.get(index++);
+                return items.values.get(index++).getItem();
             }
             throw new NoSuchElementException();
         }

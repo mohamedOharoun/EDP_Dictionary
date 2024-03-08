@@ -46,4 +46,25 @@ public class Keys implements Iterable<Object>{
             throw new NoSuchElementException();
         }
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("dict_keys([");
+        Entry temp;
+        for(int i = 0; i < values.length()-1; i++) {
+            temp = values.get(i);
+            if(temp != null) {
+                if((temp.getKey() instanceof String || temp.getKey() instanceof Character)) {
+                    sb.append("\'"); sb.append(temp.getKey()); sb.append("\', ");
+                } else {sb.append(temp.getKey()); sb.append(", ");}
+            }
+        } 
+        temp = values.get(values.length()-1);
+        if((temp.getKey() instanceof String || temp.getKey() instanceof Character)) {
+            sb.append("\'"); sb.append(temp.getKey()); sb.append("\'");
+        } else {sb.append(temp.getKey());}
+        sb.append(")]");
+        return sb.toString();
+    }
 }

@@ -46,4 +46,22 @@ public class Items implements Iterable<Object>{
             throw new NoSuchElementException();
         }
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("dict_items([");
+        Entry temp;
+        for(int i = 0; i < values.length()-1; i++) {
+            temp = values.get(i);
+            if(temp != null) {
+                sb.append(temp.toString()); sb.append(", ");
+            }
+        } 
+        temp = values.get(values.length()-1);
+        sb.append(temp.toString());
+        sb.append("])");
+        return sb.toString();
+    }
 }

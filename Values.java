@@ -16,12 +16,22 @@ public class Values implements Iterable<Object>{
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        for(int i = 0; i < values.length(); i++) {
-            if(values.get(i) != null) {
-                sb.append(values.get(i).getValue());
+        sb.append("dict_values([");
+        Entry temp;
+        for(int i = 0; i < values.length()-1; i++) {
+            temp = values.get(i);
+            if(temp != null) {
+                if (temp.getValue() instanceof String || temp.getValue() instanceof Character) {
+                    sb.append("\'"); sb.append(temp.getValue()); sb.append("\'");
+                } else {sb.append(temp.getValue());}
                 sb.append(", ");
             }
-        }
+        } 
+        temp = values.get(values.length()-1);
+        if (temp.getValue() instanceof String || temp.getValue() instanceof Character) {
+            sb.append("\'"); sb.append(temp.getValue()); sb.append("\'");
+        } else {sb.append(temp.getValue());}
+        sb.append("])");
         return sb.toString();
     }
 

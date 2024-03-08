@@ -36,4 +36,19 @@ class Entry {
     public void setValue(Object value) {
         this.keyValue = new Pair(getKey(), value);
     }
+
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("(");
+        if((keyValue.get(0) instanceof String || keyValue.get(0) instanceof Character)) {
+            sb.append("\'"); sb.append(keyValue.get(0)); sb.append("\'");
+        } else {sb.append(keyValue.get(0));}
+        sb.append(", ");
+        if((keyValue.get(1) instanceof String || keyValue.get(1) instanceof Character)) {
+            sb.append("\'"); sb.append(keyValue.get(1)); sb.append("\'");
+        } else {sb.append(keyValue.get(1));}
+        sb.append(")");  
+
+        return sb.toString();
+    }
 }

@@ -2,17 +2,24 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 public class Items implements Iterable<Object>{
-    //private IndexesList indexes;
-    private ValuesList values;
+    final private ValuesList values;
+    final private Dictionary dict;
 
     @Override
     public Iterator<Object> iterator() {
         return new ItemsIterator(this);
     }
 
-    public Items(IndexesList indexes, ValuesList values) {
-        //this.indexes = indexes;
+    public Items(ValuesList values, Dictionary dict) {
         this.values = values;
+        this.dict = dict;
+    }
+
+    public boolean contains(Pair p) {
+        Object obj = dict.getElement(p.get(0));
+        if(obj.equals(-1)) return false;
+        if(((Entry) obj).getValue().equals(p.get(1))) return true;
+        return false;
     }
 
     public int length() {

@@ -36,15 +36,17 @@ public class Dictionary implements Iterable<Object>{
 
     @Override
     public Iterator<Object> iterator() {
-        return new Keys(indexes, values).iterator();
+        return new Keys(values, this).iterator();
     }
 
     public void addElement(Entry newEntry) {
         int hash = newEntry.getHash();
         int pseudoKey = hash & mask;
         boolean stay = true;
+        Integer temp;
         while(stay) {
-            if(indexes.get(pseudoKey) == UNUSED) {
+            temp = indexes.get(pseudoKey);
+            if(temp == UNUSED) {
                 if(index == values.capacity()) {
                     resize();
                     addElement(newEntry);
@@ -54,11 +56,14 @@ public class Dictionary implements Iterable<Object>{
                     index++;
                 }
                 stay = false;
-            } else {
-                if(indexes.get(pseudoKey) != DUMMY && values.get(indexes.get(pseudoKey)).getHash() == newEntry.getHash()) {
-                    values.add(indexes.get(pseudoKey), newEntry);
-                    stay = false;
-                }
+            }else if(temp == DUMMY) {
+                indexes.put(pseudoKey, index);
+                values.add(newEntry);
+                index++;
+            }else if(values.get(temp).getHash() == newEntry.getHash()) {
+                values.replace(temp, newEntry);
+                stay = false;
+            }else {
                 hash >>>= 5;
                 pseudoKey = getNextIndex(pseudoKey, hash);
             }
@@ -77,7 +82,7 @@ public class Dictionary implements Iterable<Object>{
         boolean stay = true;
         while (stay) {
             if(tempIndex == UNUSED) {
-                throw new RuntimeException("Key not found");
+                return -1;
             }
             if(tempIndex != DUMMY && values.get(tempIndex).getHash() == keyHash) {
                 stay = false;
@@ -118,10 +123,12 @@ public class Dictionary implements Iterable<Object>{
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("{");
+        System.out.println(sb.capacity());
         Entry temp;
-        for(int i = 0; i < index - 1; i++) {
+        for(int i = 0; i < index; i++) {
             temp = values.get(i);
             if(temp != null) {
+                if(sb.length() != 1) sb.append(", ");
                 if(temp.getKey() instanceof String || temp.getKey() instanceof Character) {
                     sb.append(String.format("'%s': ", temp.getKey()));
                 } else {
@@ -133,12 +140,12 @@ public class Dictionary implements Iterable<Object>{
                 } else {
                     sb.append(temp.getValue() + "");
                 }
-                if(values.get(i + 1) != null) {
-                    sb.append(", ");
-                }
+                //if(values.get(i + 1) != null) {
+                //    sb.append(", ");
+                //}
             }
         }
-        temp = values.get(index - 1);
+        /*temp = values.get(index - 1);
         if(temp != null) {
             if(temp.getKey() instanceof Number) {
                 sb.append(temp.getKey() + ": ");
@@ -151,7 +158,7 @@ public class Dictionary implements Iterable<Object>{
             } else {
                 sb.append(String.format("'%s'", temp.getValue()));
             }
-        }
+        }*/
         
         sb.append("}");
 
@@ -163,11 +170,11 @@ public class Dictionary implements Iterable<Object>{
     }
 
     public Keys keys() {
-        return new Keys(indexes, values);
+        return new Keys(values, this);
     }
 
     public Items items() {
-        return new Items(indexes, values);
+        return new Items(values, this);
     }
 
     public void clear() {

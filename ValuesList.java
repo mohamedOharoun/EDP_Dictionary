@@ -28,9 +28,8 @@ public class ValuesList {
         n_entries = 0;
     }
 
-    public void add(int i, Entry obj) {
+    public void replace(int i, Entry obj) {
         values[i] = obj;
-        n_entries++;
     }
 
     public int capacity() {
@@ -48,4 +47,14 @@ public class ValuesList {
     public Entry[] getAll() {
         return values;
     }
+
+    boolean containsValue(Object v) {
+        for(int i = 0; i < length(); i++) {
+            if(get(i) == null) continue;
+            if(v.equals(get(i).getValue())) return true;
+        }
+        return false;
+    }
+
+    
 }

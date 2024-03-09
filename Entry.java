@@ -13,7 +13,7 @@ class Entry {
     }
 
     public Entry(Pair p) {
-        this.keyValue = new Pair(p.get(0), p.get(1));
+        this.keyValue = p;
         this.hash = p.get(0).hashCode();
     }
 
@@ -37,6 +37,7 @@ class Entry {
         this.keyValue = new Pair(getKey(), value);
     }
 
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("(");

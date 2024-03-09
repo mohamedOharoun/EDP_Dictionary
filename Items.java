@@ -2,8 +2,8 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 public class Items implements Iterable<Object>{
-    final private ValuesList values;
-    final private Dictionary dict;
+    private final ValuesList values;
+    private final Dictionary dict;
 
     @Override
     public Iterator<Object> iterator() {

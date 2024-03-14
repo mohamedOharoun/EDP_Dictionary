@@ -200,13 +200,13 @@ public class Dictionary implements Iterable<Object>{
         for(int i = 0; i < index; i++) {
             currentEntry = values.get(i);
             if(currentEntry != null) {
-                dicTemp.addElement(new Entry(currentEntry.getKey(), currentEntry.getValue(), currentEntry.getHash()));
+                dicTemp.addElement(new Entry(currentEntry.getItem(), currentEntry.getHash()));
             }
         }
         return dicTemp;
     }
 
-    public Entry popitem() {
+    public Pair popitem() {
         if (values.size() == 0) {
             throw new RuntimeException("Dictionary is empty.");
         }
@@ -214,6 +214,6 @@ public class Dictionary implements Iterable<Object>{
         while (values.get(i) == null) {i--;}
         Entry item = values.get(i);
         deleteElement(item.getKey());
-        return item;
+        return item.getItem();
     }
 }

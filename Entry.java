@@ -17,6 +17,11 @@ class Entry {
         this.hash = p.get(0).hashCode();
     }
 
+    public Entry(Pair p, int hash) {
+        this.keyValue = p;
+        this.hash = hash;
+    }
+
     public Object getValue() {
         return this.keyValue.get(1);
     }

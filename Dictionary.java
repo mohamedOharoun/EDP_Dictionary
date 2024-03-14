@@ -181,6 +181,10 @@ public class Dictionary implements Iterable<Object>{
         setDictionary(initialCapacity);
     }
 
+    public boolean contains(Object key) {
+        return getElement(key) == -1 ? false : true;
+    }
+
     private static int getUpperPowerOfTwo(int v) {
         v--;
         v |= v >> 1;
@@ -273,8 +277,7 @@ public class Dictionary implements Iterable<Object>{
             put(key, d);
             return d;
         }
-        Object v = values.get(valueIndex).getValue(); 
-        return v;
+        return values.get(valueIndex).getValue(); 
     }
 
     public Object setdefault(Object key) {

@@ -16,9 +16,8 @@ public class Items implements Iterable<Pair>{
     }
 
     public boolean contains(Pair p) {
-        Object obj = dict.getElement(p.get(0));
-        if(obj.equals(-1)) return false;
-        if(((Entry) obj).getValue().equals(p.get(1))) return true;
+        if(!dict.contains(p.get(0))) return false;
+        if(dict.get(p.get(0)).equals(p.get(1))) return true;
         return false;
     }
 

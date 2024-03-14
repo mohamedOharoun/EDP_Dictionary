@@ -16,7 +16,7 @@ public class Keys implements Iterable<Object>{
     }
 
     boolean contains(Object k) {
-        return dic.get(k).equals(-1) ? false : true;
+        return dic.contains(k);
     }
 
     public int length() {

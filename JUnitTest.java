@@ -30,7 +30,7 @@ public class JUnitTest {
         assertEquals(1, dictionary.length());
 
         // Intentar recuperar el elemento eliminado debería lanzar una excepción
-        assertThrows(RuntimeException.class, () -> dictionary.getElement("key1"));
+        assertThrows(RuntimeException.class, () -> dictionary.get("key1"));
 
         // Prueba de redimensionamiento
         // Para esto, es posible que necesites hacer público el método resize() en tu clase Dictionary

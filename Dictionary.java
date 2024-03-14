@@ -39,6 +39,10 @@ public class Dictionary implements Iterable<Object>{
         return new Keys(values, this).iterator();
     }
 
+    public Iterable<Object> reversed() {
+        return new Keys(values, this).reversed();
+    }
+
     public void addElement(Entry newEntry) {
         int hash = newEntry.getHash();
         int pseudoKey = hash & mask;

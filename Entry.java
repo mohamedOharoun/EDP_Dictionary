@@ -22,23 +22,23 @@ class Entry {
         this.hash = hash;
     }
 
-    public Object getValue() {
+    Object getValue() {
         return this.keyValue.get(1);
     }
 
-    public Object getKey() {
+    Object getKey() {
         return this.keyValue.get(0);
     }
 
-    public int getHash() {
+    int getHash() {
         return this.hash;
     }
 
-    public Pair getItem() {
+    Pair getItem() {
         return keyValue;
     }
 
-    public void setValue(Object value) {
+    void setValue(Object value) {
         this.keyValue = new Pair(getKey(), value);
     }
 

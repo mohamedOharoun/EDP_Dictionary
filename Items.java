@@ -29,7 +29,7 @@ public class Items implements Iterable<Pair>{
         return values.size();
     }
 
-    public class ItemsIterator implements Iterator<Pair> {
+    private class ItemsIterator implements Iterator<Pair> {
         Items items;
         int index;
 

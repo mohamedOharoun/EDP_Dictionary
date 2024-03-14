@@ -19,7 +19,7 @@ public class Keys implements Iterable<Object>{
         this.dic = dic;
     }
 
-    boolean contains(Object k) {
+    public boolean contains(Object k) {
         return dic.contains(k);
     }
 

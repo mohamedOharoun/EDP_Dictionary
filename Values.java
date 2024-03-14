@@ -43,7 +43,7 @@ public class Values implements Iterable<Object>{
         return values.containsValue(other);
     }
 
-    public class ValuesIterator implements Iterator<Object> {
+    private class ValuesIterator implements Iterator<Object> {
         Values vals;
         int index;
 

@@ -89,7 +89,7 @@ public class Values implements Iterable<Object>{
 
             public ValuesReversedIterator(Values values){
                 this.vals = values;
-                this.index = vals.values.length();
+                this.index = vals.values.length() - 1;
             }
     
             @Override
@@ -105,7 +105,7 @@ public class Values implements Iterable<Object>{
             @Override
             public Object next() {
                 if (hasNext()) {
-                    return vals.values.get(index--).getKey();
+                    return vals.values.get(index--).getValue();
                 }
                 throw new NoSuchElementException();
             }

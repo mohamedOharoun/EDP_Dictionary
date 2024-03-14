@@ -1,4 +1,5 @@
 import java.util.Iterator;
+import java.util.Map;
 
 public class Dictionary implements Iterable<Object>{
     private final Object UNUSED = null;
@@ -127,7 +128,6 @@ public class Dictionary implements Iterable<Object>{
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("{");
-        System.out.println(sb.capacity());
         Entry temp;
         for(int i = 0; i < index; i++) {
             temp = values.get(i);
@@ -144,25 +144,8 @@ public class Dictionary implements Iterable<Object>{
                 } else {
                     sb.append(temp.getValue() + "");
                 }
-                //if(values.get(i + 1) != null) {
-                //    sb.append(", ");
-                //}
             }
         }
-        /*temp = values.get(index - 1);
-        if(temp != null) {
-            if(temp.getKey() instanceof Number) {
-                sb.append(temp.getKey() + ": ");
-            } else {
-                sb.append(String.format("'%s': ", temp.getKey()));
-            }
-    
-            if(temp.getValue() instanceof Number) {
-                sb.append(temp.getValue() + "");
-            } else {
-                sb.append(String.format("'%s'", temp.getValue()));
-            }
-        }*/
         
         sb.append("}");
 
@@ -244,6 +227,12 @@ public class Dictionary implements Iterable<Object>{
     public void update(Dictionary dict) {
         for(Pair p : dict.items()) {
             addElement(new Entry(p));
+        }
+    }
+
+    public void update(Map<?, ?> m) {
+        for(Map.Entry<?, ?> e : m.entrySet()) {
+            addElement(new Entry(e.getKey(), e.getValue()));
         }
     }
 

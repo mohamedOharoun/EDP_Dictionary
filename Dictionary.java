@@ -1,6 +1,8 @@
 import java.util.Iterator;
 import java.util.Map;
 
+import javax.management.RuntimeErrorException;
+
 public class Dictionary implements Iterable<Object>{
     private final Object UNUSED = null;
     private final Integer DUMMY = -2;
@@ -44,7 +46,7 @@ public class Dictionary implements Iterable<Object>{
         return new Keys(values, this).reversed();
     }
 
-    public void addElement(Entry newEntry) {
+    private void addElement(Entry newEntry) {
         int hash = newEntry.getHash();
         int pseudoKey = hash & mask;
         boolean stay = true;
@@ -100,7 +102,7 @@ public class Dictionary implements Iterable<Object>{
         return tempIndex;
     }
 
-    public int deleteElement(Object key) {
+    private int deleteElement(Object key) {
         int hash = key.hashCode();
         final int keyHash = hash;
         int pseudoKey = hash & mask;
@@ -246,6 +248,10 @@ public class Dictionary implements Iterable<Object>{
         int valueIndex = getElement(key);
         if(valueIndex == -1) return d;
         return values.get(valueIndex).getValue();
+    }
+
+    public void del(Object key) {
+        if(deleteElement(key) != 0) throw new RuntimeException("KeyError");
     }
 
     public Object pop(Object key) {

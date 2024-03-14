@@ -1,8 +1,6 @@
 import java.util.Iterator;
 import java.util.Map;
 
-import javax.management.RuntimeErrorException;
-
 public class Dictionary implements Iterable<Object>{
     private final Object UNUSED = null;
     private final Integer DUMMY = -2;

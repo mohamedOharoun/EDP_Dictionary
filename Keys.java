@@ -27,9 +27,9 @@ public class Keys implements Iterable<Object>{
         return values.size();
     }
 
-    public class KeysIterator implements Iterator<Object> {
-        Keys keys;
-        int index;
+    private class KeysIterator implements Iterator<Object> {
+        private final Keys keys;
+        private int index;
 
         public KeysIterator(Keys keys){
             this.keys = keys;
@@ -56,21 +56,22 @@ public class Keys implements Iterable<Object>{
     }
 
 
-    class KeysReversed implements Iterable<Object> {
-        Keys keys;
+    private class KeysReversed implements Iterable<Object> {
+        private final Keys keys;
+
         public KeysReversed(Keys keys) {
             this.keys = keys;
         }
+
         @Override
         public Iterator<Object> iterator() {
            return new KeysReversedIterator(keys);
         }
 
-        class KeysReversedIterator implements Iterator<Object> {
-            Keys keys;
-            int index;
-    
-    
+        private class KeysReversedIterator implements Iterator<Object> {
+            private final Keys keys;
+            private int index;
+
             public KeysReversedIterator(Keys keys){
                 this.keys = keys;
                 this.index = values.length();

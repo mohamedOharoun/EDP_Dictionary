@@ -13,6 +13,10 @@ public class Values implements Iterable<Object>{
         return new ValuesIterator(this);
     }
 
+    public Iterable<Object> reversed() {
+        return new ValuesReversed(this);
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -65,5 +69,46 @@ public class Values implements Iterable<Object>{
             }
             throw new NoSuchElementException();
         }
+    }
+
+    private class ValuesReversed implements Iterable<Object> {
+        private final Values values;
+
+        public ValuesReversed(Values values) {
+            this.values = values;
+        }
+
+        @Override
+        public Iterator<Object> iterator() {
+           return new ValuesReversedIterator(values);
+        }
+
+        private class ValuesReversedIterator implements Iterator<Object> {
+            private final Values vals;
+            private int index;
+
+            public ValuesReversedIterator(Values values){
+                this.vals = values;
+                this.index = vals.values.length();
+            }
+    
+            @Override
+            public boolean hasNext() {
+                if(index < 0) return false;
+                while(index >= 0) {
+                    if(vals.values.get(index) != null) return true;
+                    index--;
+                }
+                return false;
+            }
+    
+            @Override
+            public Object next() {
+                if (hasNext()) {
+                    return vals.values.get(index--).getKey();
+                }
+                throw new NoSuchElementException();
+            }
+        }  
     }
 }

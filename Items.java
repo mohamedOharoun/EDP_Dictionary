@@ -10,6 +10,10 @@ public class Items implements Iterable<Pair>{
         return new ItemsIterator(this);
     }
 
+    public Iterable<Pair> reversed() {
+        return new ItemsReversed(this);
+    }
+
     public Items(ValuesList values, Dictionary dict) {
         this.values = values;
         this.dict = dict;
@@ -51,6 +55,47 @@ public class Items implements Iterable<Pair>{
             }
             throw new NoSuchElementException();
         }
+    }
+
+    private class ItemsReversed implements Iterable<Pair> {
+        private final Items items;
+
+        public ItemsReversed(Items items) {
+            this.items = items;
+        }
+
+        @Override
+        public Iterator<Pair> iterator() {
+           return new ItemsReversedIterator(items);
+        }
+
+        private class ItemsReversedIterator implements Iterator<Pair> {
+            private final Items items;
+            private int index;
+
+            public ItemsReversedIterator(Items items){
+                this.items = items;
+                this.index = values.length();
+            }
+    
+            @Override
+            public boolean hasNext() {
+                if(index < 0) return false;
+                while(index >= 0) {
+                    if(items.values.get(index) != null) return true;
+                    index--;
+                }
+                return false;
+            }
+    
+            @Override
+            public Pair next() {
+                if (hasNext()) {
+                    return items.values.get(index--).getItem();
+                }
+                throw new NoSuchElementException();
+            }
+        }  
     }
 
     @Override

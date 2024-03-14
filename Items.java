@@ -1,12 +1,12 @@
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class Items implements Iterable<Object>{
+public class Items implements Iterable<Pair>{
     private final ValuesList values;
     private final Dictionary dict;
 
     @Override
-    public Iterator<Object> iterator() {
+    public Iterator<Pair> iterator() {
         return new ItemsIterator(this);
     }
 
@@ -26,7 +26,7 @@ public class Items implements Iterable<Object>{
         return values.size();
     }
 
-    public class ItemsIterator implements Iterator<Object> {
+    public class ItemsIterator implements Iterator<Pair> {
         Items items;
         int index;
 
@@ -46,7 +46,7 @@ public class Items implements Iterable<Object>{
         }
 
         @Override
-        public Object next() {
+        public Pair next() {
             if (hasNext()) {
                 return items.values.get(index++).getItem();
             }

@@ -19,8 +19,8 @@ public class JUnitTest {
         assertEquals(2, dictionary.length());
 
         // Test coger elementos
-        Entry retrievedEntry1 = (Entry) dictionary.getElement("key1");
-        Entry retrievedEntry2 = (Entry) dictionary.getElement("key2");
+        Entry retrievedEntry1 = (Entry) dictionary.get("key1");
+        Entry retrievedEntry2 = (Entry) dictionary.get("key2");
 
         assertEquals(entry1, retrievedEntry1);
         assertEquals(entry2, retrievedEntry2);
@@ -42,7 +42,7 @@ public class JUnitTest {
 
         // Comprueba si se añadieron todos los elementos y se pueden recuperar.
         for (int i = 0; i < 20; i++) {
-            Entry retrievedEntry = (Entry) dictionary.getElement("key" + i);
+            Entry retrievedEntry = (Entry) dictionary.get("key" + i);
             assertNotNull(retrievedEntry);
             assertEquals("value" + i, retrievedEntry.getValue());
         }

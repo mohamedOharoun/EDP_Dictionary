@@ -74,7 +74,7 @@ public class Dictionary implements Iterable<Object>{
         return values.size();
     }
 
-    public Object getElement(Object key) {
+    private int getElement(Object key) {
         int hash = key.hashCode();
         final int keyHash = hash;
         int pseudoKey = hash & mask;
@@ -92,7 +92,7 @@ public class Dictionary implements Iterable<Object>{
                 tempIndex = indexes.get(pseudoKey);
             }
         }
-        return values.get(tempIndex);
+        return tempIndex;
     }
 
     public int deleteElement(Object key) {
@@ -181,7 +181,7 @@ public class Dictionary implements Iterable<Object>{
         setDictionary(initialCapacity);
     }
 
-    private int getUpperPowerOfTwo(int v) {
+    private static int getUpperPowerOfTwo(int v) {
         v--;
         v |= v >> 1;
         v |= v >> 2;
@@ -215,5 +215,116 @@ public class Dictionary implements Iterable<Object>{
         Entry item = values.get(i);
         deleteElement(item.getKey());
         return item.getItem();
+    }
+
+    public void put(Object key, Object value) {
+        addElement(new Entry(key, value));
+    }
+
+    public void update(Iterable<Pair> pairs) {
+        for(Pair p : pairs) {
+            addElement(new Entry(p));
+        }
+    }
+
+    public void update(Pair[] pairs) {
+        for(Pair p : pairs) {
+            addElement(new Entry(p));
+        }
+    }
+
+    public void update(Dictionary dict) {
+        for(Pair p : dict.items()) {
+            addElement(new Entry(p));
+        }
+    }
+
+    public Object get(Object key) {
+        int valueIndex = getElement(key);
+        if(valueIndex == -1) throw new RuntimeException("KeyError");
+        return values.get(valueIndex).getValue();
+    }
+
+    public Object get(Object key, Object d) {
+        int valueIndex = getElement(key);
+        if(valueIndex == -1) return d;
+        return values.get(valueIndex).getValue();
+    }
+
+    public Object pop(Object key) {
+        int valueIndex = getElement(key);
+        if(valueIndex == -1) throw new RuntimeException("KeyError");
+        Object v = values.get(valueIndex).getValue();
+        deleteElement(key);
+        return v;
+    }
+
+    public Object pop(Object key, Object d) {
+        int valueIndex = getElement(key);
+        if(valueIndex == -1) return d;
+        Object v = values.get(valueIndex).getValue(); 
+        deleteElement(key);
+        return v;
+    }
+
+    public Object setdefault(Object key, Object d) {
+        int valueIndex = getElement(key);
+        if(valueIndex == -1) {
+            put(key, d);
+            return d;
+        }
+        Object v = values.get(valueIndex).getValue(); 
+        return v;
+    }
+
+    public Object setdefault(Object key) {
+        int valueIndex = getElement(key);
+        if(valueIndex == -1) {
+            put(key, null);
+            return null;
+        }
+        return values.get(valueIndex).getValue(); 
+    }
+
+    public static Dictionary fromkeys(Object[] keys, Object value) {
+        Dictionary newDict = new Dictionary();
+        newDict.setDictionary(getUpperPowerOfTwo(keys.length) << 1);
+        for(Object k : keys) {
+            newDict.addElement(new Entry(k, value));
+        }
+        return newDict;
+    }
+
+    public static Dictionary fromkeys(Iterable<Object> keys, Object value) {
+        Dictionary newDict = new Dictionary();
+        for(Object k : keys) {
+            newDict.addElement(new Entry(k, value));
+        }
+        return newDict;
+    }
+
+    public static Dictionary fromkeys(Object[] keys) {
+        Dictionary newDict = new Dictionary();
+        newDict.setDictionary(getUpperPowerOfTwo(keys.length) << 1);
+        for(Object k : keys) {
+            newDict.addElement(new Entry(k, null));
+        }
+        return newDict;
+    }
+
+    public static Dictionary fromkeys(Iterable<Object> keys) {
+        Dictionary newDict = new Dictionary();
+        for(Object k : keys) {
+            newDict.addElement(new Entry(k, null));
+        }
+        return newDict;
+    }
+
+    public Dictionary merge(Dictionary other) {
+        Dictionary newDict = this.copy();
+        for(Pair p : other.items()) {
+            newDict.addElement(new Entry(p));
+        }
+        return newDict;
     }
 }

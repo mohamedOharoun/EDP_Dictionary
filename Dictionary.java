@@ -194,6 +194,11 @@ public class Dictionary implements Iterable<Object>{
         return v;
     }
 
+    /**
+     * Este método realiza la copia de un diccionario (con claves y valores).
+     * 
+     * @return La copia del diccionario.
+     */
     public Dictionary copy() {
         Dictionary dicTemp = new Dictionary();
         //TODO: Añadir código para decidir si múltiplico getUpperOfTwo
@@ -208,9 +213,14 @@ public class Dictionary implements Iterable<Object>{
         return dicTemp;
     }
 
+    /**
+     * El método elimina el último elemento del diccionario y lo devuelve.
+     * 
+     * @return Devuelve el conjunto (clave, valor).
+     */
     public Pair popitem() {
         if (values.size() == 0) {
-            throw new RuntimeException("Dictionary is empty.");
+            throw new KeyError("Dictionary is empty.");
         }
         int i = index;
         while (values.get(i) == null) {i--;}

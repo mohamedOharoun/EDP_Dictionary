@@ -1,12 +1,12 @@
 public class KeyError extends RuntimeException {
-    private String key;
+    private Object key;
 
-    public KeyError(String key) {
-        super("KeyError: '" + key + "'");
-        this.key = key;
+    public KeyError(Object key) {
+        super((key instanceof String || key instanceof Character) ? "'" : "" + key + ((key instanceof String || key instanceof Character) ? "'" : ""));
+        this.key = key.toString();
     }
 
-    public String getKey() {
+    public Object getKey() {
         return key;
     }
 

@@ -65,7 +65,10 @@ public class Dictionary implements Iterable<Object>{
                 indexes.put(pseudoKey, index);
                 values.add(newEntry);
                 index++;
-            }else if(values.get(temp).getHash() == newEntry.getHash()) {
+            }else if(
+                    values.get(temp).getHash() == newEntry.getHash() 
+                    && values.get(temp).getKey().getClass().equals(newEntry.getKey().getClass())
+                ) {
                 values.replace(temp, newEntry);
                 stay = false;
             }else {
@@ -89,7 +92,11 @@ public class Dictionary implements Iterable<Object>{
             if(tempIndex == UNUSED) {
                 return -1;
             }
-            if(tempIndex != DUMMY && values.get(tempIndex).getHash() == keyHash) {
+            if(
+                tempIndex != DUMMY 
+                && values.get(tempIndex).getHash() == keyHash
+                && values.get(tempIndex).getKey().getClass().equals(key.getClass())
+                ) {
                 stay = false;
             } else {
                 hash >>>= 5;
@@ -110,7 +117,11 @@ public class Dictionary implements Iterable<Object>{
             if(tempIndex == UNUSED) {
                 return -1;
             }
-            if(tempIndex != DUMMY && values.get(tempIndex).getHash() == keyHash) {
+            if(
+                tempIndex != DUMMY 
+                && values.get(tempIndex).getHash() == keyHash
+                && values.get(tempIndex).getKey().getClass().equals(key.getClass())
+                ) {
                 indexes.put(pseudoKey, DUMMY);
                 values.delete(tempIndex);
                 stay = false;

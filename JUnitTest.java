@@ -134,13 +134,13 @@ public class JUnitTest {
     @Test
     public void length100numbers() {
         Dictionary dictionary = new Dictionary();
-        int numberVariable = 100;
+        final int numberVariable = 100;
 
-        for(int i = 0; i < 100; i++) {
+        for(int i = 0; i < numberVariable; i++) {
             dictionary.put(i, "value");
         }
 
-        assertEquals(100, dictionary.length());
+        assertEquals(numberVariable, dictionary.length());
     }
 
     @Test

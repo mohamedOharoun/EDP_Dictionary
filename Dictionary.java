@@ -263,7 +263,7 @@ public class Dictionary implements Iterable<Object>{
 
     public Object get(Object key) {
         int valueIndex = getElement(key);
-        if(valueIndex == -1) throw new KeyError(key.toString());
+        if(valueIndex == -1) throw new KeyError(key);
         return values.get(valueIndex).getValue();
     }
 
@@ -274,12 +274,12 @@ public class Dictionary implements Iterable<Object>{
     }
 
     public void del(Object key) {
-        if(deleteElement(key) != 0) throw new KeyError(key.toString());
+        if(deleteElement(key) != 0) throw new KeyError(key);
     }
 
     public Object pop(Object key) {
         int valueIndex = getElement(key);
-        if(valueIndex == -1) throw new KeyError(key.toString());
+        if(valueIndex == -1) throw new KeyError(key);
         Object v = values.get(valueIndex).getValue();
         deleteElement(key);
         return v;

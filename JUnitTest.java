@@ -205,16 +205,20 @@ public class JUnitTest {
     @Test
     public void testUpdate() {
         Dictionary dictionary = new Dictionary();
+
+        // Creo tres objetos de tipo Pair.
         Pair p1 = new Pair("key1", "value1");
         Pair p2 = new Pair(2, "value2");
         Pair p3 = new Pair(3.5, 3);
 
+        // Inserto los objetos Pair en un array Pair[].
         Pair[] parejas = new Pair[3];
         parejas[0] = p1; parejas[1] = p2; parejas[2] = p3;
+        // Utilizo método uptade() para insertar los objetos en el diccionario.
         dictionary.update(parejas);
 
 
-        // Verifico si los elementos se han metido correctamente al diccionario
+        // Verifico si los elementos se han metido correctamente al diccionario.
         assertTrue(dictionary.contains("key1"));
         assertTrue(dictionary.contains(2));
         assertTrue(dictionary.contains(3.5));
@@ -238,9 +242,86 @@ public class JUnitTest {
         assertEquals("value1", dictionary.get("key1"));
         assertEquals(3, dictionary.get(""));
         assertEquals("value3", dictionary.get("key3"));
-        dictionary.del("key3");
-        assertThrows(KeyError.class, () -> dictionary.get("key3"));
+        assertThrows(KeyError.class, () -> dictionary.get("key5"));
         assertEquals(3, dictionary.get(""));
         assertEquals("32", dictionary.get("key4"));
     }
+
+     @Test
+     public void testdel() {
+        Dictionary dictionary = new Dictionary();
+
+        // Creo tres objetos de tipo Pair.
+        Pair p1 = new Pair("key1", "value1");
+        Pair p2 = new Pair(2, "value2");
+
+        Pair[] parejas = new Pair[2];
+        parejas[0] = p1; parejas[1] = p2;
+
+        // Ingreso los elementos al diccionario.
+        dictionary.update(parejas);
+        dictionary.put(3, "value3");
+        dictionary.put(4.5, 4.321);
+
+        // Elimino elementos con del().
+        dictionary.del(3);
+        dictionary.del("key1");
+
+        // Verifico que los elementos han sido eliminados.
+        assertThrows(KeyError.class, () -> dictionary.get(3));
+        assertEquals(4.321, dictionary.get(4.5));
+        assertEquals(2, dictionary.length());
+        
+     }   
+
+     @Test
+     public void testpop() {
+        Dictionary dictionary = new Dictionary();
+
+        // Inserto valores.
+        dictionary.put("key1", "value1");
+        dictionary.put("", 3);
+        dictionary.put("key3", 5);
+        dictionary.put(new Pair("key4", "32"));
+
+        assertEquals(4, dictionary.length());
+
+        // Verifico que el método pop() saca elementos del diccionario.
+        assertEquals(5, dictionary.pop("key3"));
+        assertEquals(3, dictionary.length());
+        assertThrows(KeyError.class, () -> dictionary.pop("key3"));
+     }
+
+     @Test
+     public void testsetdefault() {
+        Dictionary dictionary = new Dictionary();
+
+        // Inserto valores en el diccionario.
+        dictionary.put("key1", "value1");
+        dictionary.put(2, "value2inicial");
+        dictionary.put("key3", 64);
+        dictionary.put("key4", "value4");
+
+        // Uso el método setdefault(): nuevas claves y claves ya existentes.
+        assertEquals("value5", dictionary.setdefault("key5", "value5"));
+        assertEquals(64, dictionary.setdefault("key3", "value3"));
+        assertEquals("value2inicial", dictionary.setdefault(2, "value2.1"));
+     }
+
+     @Test
+     public void testfromkeys() {
+        // Creo una Lista de objetos.
+        ArrayList<Object> keys = new ArrayList<Object>(3);
+        keys.add("key1"); keys.add("key2"); keys.add(3);
+
+        // Inserto los objetos al diccionario usando fromkeys(): valores por defecto a claves distintas..
+        Dictionary dictionary = new Dictionary();
+        dictionary = Dictionary.fromkeys(keys, 0);
+        dictionary.put(3, "new_value");
+
+        // Compruebo que las claves tienen el mismo valor por defecto.
+        assertEquals(0, dictionary.get("key1"));
+        assertEquals(0, dictionary.get("key2"));
+        assertEquals("new_value", dictionary.pop(3));
+     }
 }

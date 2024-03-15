@@ -201,4 +201,46 @@ public class JUnitTest {
         assertEquals("value2", dictionary.get("key2"));
         assertEquals("value3", dictionary.get("key3"));
     }
+
+    @Test
+    public void testUpdate() {
+        Dictionary dictionary = new Dictionary();
+        Pair p1 = new Pair("key1", "value1");
+        Pair p2 = new Pair(2, "value2");
+        Pair p3 = new Pair(3.5, 3);
+
+        Pair[] parejas = new Pair[3];
+        parejas[0] = p1; parejas[1] = p2; parejas[2] = p3;
+        dictionary.update(parejas);
+
+
+        // Verifico si los elementos se han metido correctamente al diccionario
+        assertTrue(dictionary.contains("key1"));
+        assertTrue(dictionary.contains(2));
+        assertTrue(dictionary.contains(3.5));
+
+        assertEquals("value1", dictionary.get("key1"));
+        assertEquals(3, dictionary.get(3.5));
+    }
+
+    @Test
+    public void testget() {
+        Dictionary dictionary = new Dictionary();
+
+        // Inserto valores.
+        dictionary.put("key1", "value1");
+        dictionary.put("", 3);
+        dictionary.put("key3", "value3");
+        dictionary.put(new Pair("key4", "32"));
+
+
+        // Verifico que el valor de la clave es correcto
+        assertEquals("value1", dictionary.get("key1"));
+        assertEquals(3, dictionary.get(""));
+        assertEquals("value3", dictionary.get("key3"));
+        dictionary.del("key3");
+        assertThrows(KeyError.class, () -> dictionary.get("key3"));
+        assertEquals(3, dictionary.get(""));
+        assertEquals("32", dictionary.get("key4"));
+    }
 }

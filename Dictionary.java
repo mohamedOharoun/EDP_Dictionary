@@ -135,6 +135,11 @@ public class Dictionary implements Iterable<Object>{
         return 0;
     }
 
+    /**
+     * Este método recorre los elementos del diccionario y los inserta en una StringBuilder().
+     * 
+     * @return El diccionario en formato String (la StringBuilder()).
+     */
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -163,22 +168,46 @@ public class Dictionary implements Iterable<Object>{
         return sb.toString();
     }
 
+    /**
+     * Este método accede a los valores del diccionario.
+     * 
+     * @return Los valores del diccionario.
+     */
     public Values values() {
         return new Values(values);
     }
 
+    /**
+     * Este método accede a las claves del diccionario.
+     * 
+     * @return Las claves del diccionario.
+     */
     public Keys keys() {
         return new Keys(values, this);
     }
 
+    /**
+     * Este método accede a los elementos del diccionario.
+     * 
+     * @return Los elementos del diccionario (clave, valor).
+     */
     public Items items() {
         return new Items(values, this);
     }
 
+    /**
+     * Este método elimina todos los elementos del diccionario.
+     */
     public void clear() {
         setDictionary(initialCapacity);
     }
 
+    /**
+     * Este método busca si una clave está ya en el diccionario.
+     * 
+     * @param key La clave que se busca.
+     * @return Valor booleano que indica si está en el diccionario.
+     */
     public boolean contains(Object key) {
         return getElement(key) == -1 ? false : true;
     }
@@ -216,7 +245,7 @@ public class Dictionary implements Iterable<Object>{
     /**
      * El método elimina el último elemento del diccionario y lo devuelve.
      * 
-     * @return Devuelve el conjunto (clave, valor).
+     * @return El último elemento del diccionario (clave, valor).
      */
     public Pair popitem() {
         if (values.size() == 0) {
@@ -229,26 +258,51 @@ public class Dictionary implements Iterable<Object>{
         return item.getItem();
     }
 
+    /**
+     * Este método inserta un nuevo elemento al diccionario.
+     * 
+     * @param key La clave del nuevo elemento.
+     * @param value El valor del nuevo elemento.
+     */
     public void put(Object key, Object value) {
         addElement(new Entry(key, value));
     }
 
+    /**
+     * Este método inserta al diccionario un nuevo elemento de tipo Pair.
+     * @param p Objeto de tipo Pair.
+     */
     public void put(Pair p) {
         addElement(new Entry(p));
     }
 
+    /**
+     * Este método inserta al diccionario elementos a partir de un Objeto iterable de tipo Pair.
+     * 
+     * @param pairs El Array de elementos de tipo Pair.
+     */
     public void update(Iterable<Pair> pairs) {
         for(Pair p : pairs) {
             addElement(new Entry(p));
         }
     }
 
+    /**
+     * Este método inserta al diccionario elementos a partir de un Pair[].
+     * 
+     * @param pairs Pair[] que integra elementos de tipo Pair.
+     */
     public void update(Pair[] pairs) {
         for(Pair p : pairs) {
             addElement(new Entry(p));
         }
     }
 
+    /**
+     * Este método inserta al diccionario los elementos de otro diccionario.
+     * 
+     * @param dict El diccionario del cual insertar los elementos.
+     */
     public void update(Dictionary dict) {
         for(Pair p : dict.items()) {
             addElement(new Entry(p));
@@ -261,6 +315,12 @@ public class Dictionary implements Iterable<Object>{
         }
     }
 
+    /**
+     * Este método busca el valor de una clave en el diccionario.
+     * 
+     * @param key La clave que se quiere buscar.
+     * @return El valor de la clave.
+     */
     public Object get(Object key) {
         int valueIndex = getElement(key);
         if(valueIndex == -1) throw new KeyError(key.toString());
@@ -273,10 +333,21 @@ public class Dictionary implements Iterable<Object>{
         return values.get(valueIndex).getValue();
     }
 
+    /**
+     * Este método elimina del diccionario el elemento asociado a una clave.
+     * 
+     * @param key La clave del elemento que se quiera eliminar.
+     */
     public void del(Object key) {
         if(deleteElement(key) != 0) throw new KeyError(key.toString());
     }
 
+    /**
+     * Este método elimina el elemento asociado a una clave.
+     * 
+     * @param key La clave asociada al elemento que se quiera eliminar.
+     * @return El valor del elemento eliminado.
+     */
     public Object pop(Object key) {
         int valueIndex = getElement(key);
         if(valueIndex == -1) throw new KeyError(key.toString());
@@ -320,6 +391,12 @@ public class Dictionary implements Iterable<Object>{
         return newDict;
     }
 
+    /** Este método crea un diccionario con elementos nuevos.
+     * 
+     * @param keys Las claves de los nuevos elementos.
+     * @param value Los valores de los nuevos elementos.
+     * @return El nuevo diccionario.
+     */
     public static Dictionary fromkeys(Iterable<Object> keys, Object value) {
         Dictionary newDict = new Dictionary();
         for(Object k : keys) {
@@ -328,6 +405,11 @@ public class Dictionary implements Iterable<Object>{
         return newDict;
     }
 
+    /**
+     * 
+     * @param keys
+     * @return
+     */
     public static Dictionary fromkeys(Object[] keys) {
         Dictionary newDict = new Dictionary();
         newDict.setDictionary(getUpperPowerOfTwo(keys.length) << 1);
@@ -337,6 +419,11 @@ public class Dictionary implements Iterable<Object>{
         return newDict;
     }
 
+    /**
+     * aa
+     * @param keys
+     * @return
+     */
     public static Dictionary fromkeys(Iterable<Object> keys) {
         Dictionary newDict = new Dictionary();
         for(Object k : keys) {
@@ -345,6 +432,12 @@ public class Dictionary implements Iterable<Object>{
         return newDict;
     }
 
+    /**
+     * Este método crea un diccionario nuevo a partir de concatenar dos.
+     * 
+     * @param other Otro diccionario que concatena al que se le aplica.
+     * @return El diccionario nuevo compuesto por los dos anteriores.
+     */
     public Dictionary merge(Dictionary other) {
         Dictionary newDict = this.copy();
         for(Pair p : other.items()) {
@@ -352,4 +445,5 @@ public class Dictionary implements Iterable<Object>{
         }
         return newDict;
     }
+
 }

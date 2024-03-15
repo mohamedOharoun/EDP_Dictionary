@@ -223,6 +223,10 @@ public class Dictionary implements Iterable<Object>{
         addElement(new Entry(key, value));
     }
 
+    public void put(Pair p) {
+        addElement(new Entry(p));
+    }
+
     public void update(Iterable<Pair> pairs) {
         for(Pair p : pairs) {
             addElement(new Entry(p));

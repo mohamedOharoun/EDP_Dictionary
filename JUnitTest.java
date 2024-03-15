@@ -6,6 +6,108 @@ import org.junit.Test;
 public class JUnitTest {
 
     @Test
+    public void testPopItem() {
+        Dictionary dictionary = new Dictionary();
+
+        // Verificar que popitem() lance una excepción cuando el diccionario está vacío
+        assertThrows(RuntimeException.class, () -> {
+            dictionary.popitem();
+        });
+
+        dictionary.put("key1", "value1");
+        dictionary.put("key2", "value2");
+        dictionary.put("key3", "value3");
+
+        int sizeBefore = dictionary.length();
+
+        // Obtener un elemento del diccionario usando popitem()
+        Pair poppedItem = dictionary.popitem();
+
+        // Verificar que el tamaño del diccionario haya disminuido
+        assertEquals(sizeBefore - 1, dictionary.length());
+
+        // Verificar que el elemento obtenido no sea nulo
+        assertNotNull(poppedItem);
+
+        // Verificar que el elemento obtenido tenga una clave y un valor no nulos
+        assertNotNull(poppedItem.get(0));
+        assertNotNull(poppedItem.get(1));
+
+        // Verificar que el elemento obtenido no esté presente en el diccionario original
+        assertFalse(dictionary.contains(poppedItem.get(0)));
+    }
+
+    @Test
+    public void testCopy() {
+        Dictionary dictionary = new Dictionary();
+
+        dictionary.put("key1", "value1");
+        dictionary.put("key2", "value2");
+        dictionary.put("key3", "value3");
+
+        Dictionary copia = dictionary.copy();
+
+        assertNotSame(dictionary, copia);
+
+        assertEquals(dictionary.length(), copia.length());
+        assertTrue(copia.contains("key1"));
+        assertTrue(copia.contains("key2"));
+        assertTrue(copia.contains("key3"));
+        assertEquals("value1", copia.get("key1"));
+        assertEquals("value2", copia.get("key2"));
+        assertEquals("value3", copia.get("key3"));
+    }
+
+    @Test
+    public void testContains() {
+        Dictionary dictionary = new Dictionary();
+
+        for(int i = 0; i < 20; i++) {
+            dictionary.put(i, "value" + i);
+        }
+
+        assertEquals(true, dictionary.contains(17));
+        assertEquals(false, dictionary.contains(1000));
+    }
+
+    @Test
+    public void testClear() {
+        Dictionary dictionary = new Dictionary();
+
+        for(int i = 0; i < 100; i++) {
+            dictionary.put(i, "value" + i);
+        }
+
+        dictionary.clear();
+
+        assertEquals(0, dictionary.length());
+    }
+
+    @Test
+    public void testKeys() {
+        Dictionary dictionary = new Dictionary();
+
+        for(int i = 0; i < 100; i++) {
+            dictionary.put(i, "value" + i);
+        }
+
+        List<Object> expectedKeys = new ArrayList<>();
+        for(int i = 0; i < 100; i++) {
+            expectedKeys.add(i);
+        }
+
+        Keys keys = dictionary.keys();
+
+        List<Object> actualKeys = new ArrayList<>();
+        for(Object key : keys) {
+            actualKeys.add(key);
+        }
+
+        assertEquals(expectedKeys.size(), actualKeys.size());
+        assertTrue(actualKeys.containsAll(expectedKeys));
+    }
+
+    @Test
     public void testValues() {
         Dictionary dictionary = new Dictionary();
 

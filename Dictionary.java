@@ -249,7 +249,7 @@ public class Dictionary implements Iterable<Object>{
      */
     public Pair popitem() {
         if (values.size() == 0) {
-            throw new KeyError("Dictionary is empty.");
+            throw new KeyError("Dictionary is empty");
         }
         int i = index;
         while (values.get(i) == null) {i--;}

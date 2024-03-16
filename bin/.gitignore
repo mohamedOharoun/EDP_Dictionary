@@ -1,3 +1,4 @@
-f.py
+*.py
 Main.*
 *.class
+/bin

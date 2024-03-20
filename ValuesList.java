@@ -36,10 +36,6 @@ class ValuesList {
         return values.length;
     }
 
-    int length() {
-        return index;
-    }
-
     int size() {
         return n_entries;
     }
@@ -49,7 +45,7 @@ class ValuesList {
     }
 
     boolean containsValue(Object v) {
-        for(int i = 0; i < length(); i++) {
+        for(int i = 0; i < size(); i++) {
             if(get(i) == null) continue;
             if(v.equals(get(i).getValue())) return true;
         }

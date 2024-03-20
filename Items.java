@@ -40,8 +40,8 @@ public class Items implements Iterable<Pair>{
 
         @Override
         public boolean hasNext() {
-            if(index >= items.values.length()) return false;
-            while(index <= items.values.length()) {
+            if(index >= items.values.capacity()) return false;
+            while(index <= items.values.capacity()) {
                 if(items.values.get(index) != null) return true;
                 index++;
             }
@@ -75,7 +75,7 @@ public class Items implements Iterable<Pair>{
 
             public ItemsReversedIterator(Items items){
                 this.items = items;
-                this.index = values.length();
+                this.index = values.capacity() - 1;
             }
     
             @Override
@@ -104,13 +104,13 @@ public class Items implements Iterable<Pair>{
 
         sb.append("dict_items([");
         Entry temp;
-        for(int i = 0; i < values.length()-1; i++) {
+        for(int i = 0; i < values.capacity()-1; i++) {
             temp = values.get(i);
             if(temp != null) {
                 sb.append(temp.toString()); sb.append(", ");
             }
         } 
-        temp = values.get(values.length()-1);
+        temp = values.get(values.capacity()-1);
         sb.append(temp.toString());
         sb.append("])");
         return sb.toString();

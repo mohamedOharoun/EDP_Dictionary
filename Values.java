@@ -22,7 +22,7 @@ public class Values implements Iterable<Object>{
         StringBuilder sb = new StringBuilder();
         sb.append("dict_values([");
         Entry temp;
-        for(int i = 0; i < values.length()-1; i++) {
+        for(int i = 0; i < values.capacity()-1; i++) {
             temp = values.get(i);
             if(temp != null) {
                 if (temp.getValue() instanceof String || temp.getValue() instanceof Character) {
@@ -31,7 +31,7 @@ public class Values implements Iterable<Object>{
                 sb.append(", ");
             }
         } 
-        temp = values.get(values.length()-1);
+        temp = values.get(values.capacity()-1);
         if (temp.getValue() instanceof String || temp.getValue() instanceof Character) {
             sb.append("\'"); sb.append(temp.getValue()); sb.append("\'");
         } else {sb.append(temp.getValue());}
@@ -54,8 +54,8 @@ public class Values implements Iterable<Object>{
 
         @Override
         public boolean hasNext() {
-            if(index >= vals.values.length()) return false;
-            while(index <= vals.values.length()) {
+            if(index >= vals.values.capacity()) return false;
+            while(index <= vals.values.capacity()) {
                 if(vals.values.get(index) != null) return true;
                 index++;
             }
@@ -89,7 +89,7 @@ public class Values implements Iterable<Object>{
 
             public ValuesReversedIterator(Values values){
                 this.vals = values;
-                this.index = vals.values.length() - 1;
+                this.index = vals.values.capacity() - 1;
             }
     
             @Override

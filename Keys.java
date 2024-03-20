@@ -38,8 +38,8 @@ public class Keys implements Iterable<Object>{
 
         @Override
         public boolean hasNext() {
-            if(index >= keys.values.length()) return false;
-            while(index <= keys.values.length()) {
+            if(index >= keys.values.capacity()) return false;
+            while(index <= keys.values.capacity()) {
                 if(keys.values.get(index) != null) return true;
                 index++;
             }
@@ -74,7 +74,7 @@ public class Keys implements Iterable<Object>{
 
             public KeysReversedIterator(Keys keys){
                 this.keys = keys;
-                this.index = values.length();
+                this.index = values.capacity() - 1;
             }
     
             @Override
@@ -102,7 +102,7 @@ public class Keys implements Iterable<Object>{
         StringBuilder sb = new StringBuilder();
         sb.append("dict_keys([");
         Entry temp;
-        for(int i = 0; i < values.length()-1; i++) {
+        for(int i = 0; i < values.capacity()-1; i++) {
             temp = values.get(i);
             if(temp != null) {
                 if((temp.getKey() instanceof String || temp.getKey() instanceof Character)) {
@@ -110,7 +110,7 @@ public class Keys implements Iterable<Object>{
                 } else {sb.append(temp.getKey()); sb.append(", ");}
             }
         } 
-        temp = values.get(values.length()-1);
+        temp = values.get(values.capacity()-1);
         if((temp.getKey() instanceof String || temp.getKey() instanceof Character)) {
             sb.append("\'"); sb.append(temp.getKey()); sb.append("\'");
         } else {sb.append(temp.getKey());}

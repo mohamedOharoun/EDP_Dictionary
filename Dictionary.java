@@ -1,14 +1,17 @@
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
-public class Dictionary implements Iterable<Object>{
+public class Dictionary implements Iterable<Object> {
     private final Object UNUSED = null;
     private final Integer DUMMY = -2;
     private final int initialCapacity = 8;
-    private int index;
     private final IndexesList indexes = new IndexesList(null);
     private final ValuesList values = new ValuesList(null);
+    private final double GROWTH_RATE = 2.0/3;
     private int mask;
+    private int index;
 
     public Dictionary() {
         setDictionary(initialCapacity);   
@@ -16,7 +19,7 @@ public class Dictionary implements Iterable<Object>{
 
     private void setDictionary(int newCapacity) {
         indexes.setArray(new Integer[newCapacity]);
-        values.setArray(new Entry[(int) Math.round(newCapacity * (2.0/3))]);
+        values.setArray(new Entry[(int) Math.round(newCapacity * GROWTH_RATE)]);
         index = 0;
         mask = newCapacity - 1;
     }
@@ -444,6 +447,16 @@ public class Dictionary implements Iterable<Object>{
             newDict.addElement(new Entry(p));
         }
         return newDict;
+    }
+
+    public List<Object> list() {
+        List<Object> keys = new ArrayList<>(values.size());
+        Object temp;
+        for(int i = 0; i < index; i++) {
+            temp = values.get(i).getKey();
+            if(temp != null) keys.add(temp);
+        }
+        return keys;
     }
 
 }

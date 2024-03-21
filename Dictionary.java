@@ -226,6 +226,12 @@ public class Dictionary implements Iterable<Object> {
         return v;
     }
 
+    private int calculateProperSize(int n) {
+        int new_size = getUpperPowerOfTwo(n);
+        if(new_size * GROWTH_RATE <= n) new_size <<= 1;
+        return new_size;
+    }
+
     /**
      * Este método realiza la copia de un diccionario (con claves y valores).
      * 
@@ -233,9 +239,7 @@ public class Dictionary implements Iterable<Object> {
      */
     public Dictionary copy() {
         Dictionary dicTemp = new Dictionary();
-        int new_size = getUpperPowerOfTwo(values.size());
-        if(new_size * GROWTH_RATE <= this.length()) new_size <<= 1;
-        dicTemp.setDictionary(new_size);
+        dicTemp.setDictionary(calculateProperSize(values.size()));
         Entry currentEntry;
         for(int i = 0; i < index; i++) {
             currentEntry = values.get(i);

@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -9,13 +10,18 @@ public class Dictionary implements Iterable<Object> {
     private final int initialCapacity = 8;
     private final IndexesList indexes = new IndexesList(null);
     private final ValuesList values = new ValuesList(null);
-    private final double GROWTH_RATE = 2.0/3;
+    private final static double GROWTH_RATE = 2.0/3;
     private int mask;
     private int index;
 
     public Dictionary() {
         setDictionary(initialCapacity);   
     }
+
+    private Dictionary(int n) {
+        setDictionary(n);
+    }
+
 
     private void setDictionary(int newCapacity) {
         indexes.setArray(new Integer[newCapacity]);
@@ -226,7 +232,7 @@ public class Dictionary implements Iterable<Object> {
         return v;
     }
 
-    private int calculateProperSize(int n) {
+    private static int calculateProperSize(int n) {
         int new_size = getUpperPowerOfTwo(n);
         if(new_size * GROWTH_RATE <= n) new_size <<= 1;
         return new_size;
@@ -238,8 +244,7 @@ public class Dictionary implements Iterable<Object> {
      * @return La copia del diccionario.
      */
     public Dictionary copy() {
-        Dictionary dicTemp = new Dictionary();
-        dicTemp.setDictionary(calculateProperSize(values.size()));
+        Dictionary dicTemp = new Dictionary(calculateProperSize(values.size()));
         Entry currentEntry;
         for(int i = 0; i < index; i++) {
             currentEntry = values.get(i);
@@ -399,6 +404,16 @@ public class Dictionary implements Iterable<Object> {
         return newDict;
     }
 
+    private static int calculateIterableSize(Iterable<Object> iter) {
+        if(iter instanceof Collection) {
+            return ((Collection<?>) iter).size();
+        } else {
+            int size = 0;
+            for(@SuppressWarnings("unused") Object i : iter) size++;
+            return size;
+        }
+    }
+
     /** Este método crea un diccionario con elementos nuevos.
      * 
      * @param keys Las claves de los nuevos elementos.
@@ -406,7 +421,7 @@ public class Dictionary implements Iterable<Object> {
      * @return El nuevo diccionario.
      */
     public static Dictionary fromkeys(Iterable<Object> keys, Object value) {
-        Dictionary newDict = new Dictionary();
+        Dictionary newDict = new Dictionary(calculateProperSize(calculateIterableSize(keys)));
         for(Object k : keys) {
             newDict.addElement(new Entry(k, value));
         }
@@ -419,8 +434,7 @@ public class Dictionary implements Iterable<Object> {
      * @return
      */
     public static Dictionary fromkeys(Object[] keys) {
-        Dictionary newDict = new Dictionary();
-        newDict.setDictionary(getUpperPowerOfTwo(keys.length) << 1);
+        Dictionary newDict = new Dictionary(calculateProperSize(keys.length));
         for(Object k : keys) {
             newDict.addElement(new Entry(k, null));
         }
@@ -463,5 +477,4 @@ public class Dictionary implements Iterable<Object> {
         }
         return keys;
     }
-
 }

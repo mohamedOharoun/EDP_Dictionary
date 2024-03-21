@@ -18,10 +18,24 @@ public class Dictionary implements Iterable<Object> {
         setDictionary(initialCapacity);   
     }
 
+    public Dictionary(Pair[] ps)  {
+        this.setDictionary(calculateProperSize(ps.length));
+        this.update(ps);
+    }
+
+    public Dictionary(Iterable<Pair> iter)  {
+        this.setDictionary(calculateProperSize(calculateIterableSize(iter)));
+        this.update(iter);
+    }
+
+    public Dictionary(Map<?, ?> m)  {
+        this.setDictionary(calculateProperSize(m.size()));
+        this.update(m);
+    }
+
     private Dictionary(int n) {
         setDictionary(n);
     }
-
 
     private void setDictionary(int newCapacity) {
         indexes.setArray(new Integer[newCapacity]);
@@ -381,7 +395,6 @@ public class Dictionary implements Iterable<Object> {
         int valueIndex = getElement(key);
         if(valueIndex == -1) {
             put(key, d);
-            return d;
         }
         return values.get(valueIndex).getValue(); 
     }
@@ -390,21 +403,19 @@ public class Dictionary implements Iterable<Object> {
         int valueIndex = getElement(key);
         if(valueIndex == -1) {
             put(key, null);
-            return null;
         }
         return values.get(valueIndex).getValue(); 
     }
 
     public static Dictionary fromkeys(Object[] keys, Object value) {
-        Dictionary newDict = new Dictionary();
-        newDict.setDictionary(getUpperPowerOfTwo(keys.length) << 1);
+        Dictionary newDict = new Dictionary(calculateProperSize(keys.length));
         for(Object k : keys) {
             newDict.addElement(new Entry(k, value));
         }
         return newDict;
     }
 
-    private static int calculateIterableSize(Iterable<Object> iter) {
+private static int calculateIterableSize(Iterable<?> iter) {
         if(iter instanceof Collection) {
             return ((Collection<?>) iter).size();
         } else {
@@ -420,7 +431,7 @@ public class Dictionary implements Iterable<Object> {
      * @param value Los valores de los nuevos elementos.
      * @return El nuevo diccionario.
      */
-    public static Dictionary fromkeys(Iterable<Object> keys, Object value) {
+    public static Dictionary fromkeys(Iterable<?> keys, Object value) {
         Dictionary newDict = new Dictionary(calculateProperSize(calculateIterableSize(keys)));
         for(Object k : keys) {
             newDict.addElement(new Entry(k, value));
@@ -446,7 +457,7 @@ public class Dictionary implements Iterable<Object> {
      * @param keys
      * @return
      */
-    public static Dictionary fromkeys(Iterable<Object> keys) {
+    public static Dictionary fromkeys(Iterable<?> keys) {
         Dictionary newDict = new Dictionary();
         for(Object k : keys) {
             newDict.addElement(new Entry(k, null));

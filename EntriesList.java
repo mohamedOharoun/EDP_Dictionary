@@ -1,9 +1,9 @@
-class ValuesList {
+class EntriesList {
     private Entry[] values;
     private int index = 0;
     private int n_entries = 0;
 
-    public ValuesList(Entry[] values) {
+    public EntriesList(Entry[] values) {
         this.values = values;
     }
 

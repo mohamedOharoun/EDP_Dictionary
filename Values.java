@@ -2,9 +2,9 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 public class Values implements Iterable<Object>{
-    private final ValuesList values;
+    private final EntriesList values;
 
-    public Values(ValuesList values) {
+    public Values(EntriesList values) {
         this.values = values;
     }
 

@@ -2,7 +2,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 public class Keys implements Iterable<Object>{
-    final private ValuesList values;
+    final private EntriesList values;
     final private Dictionary dic;
 
     @Override
@@ -14,7 +14,7 @@ public class Keys implements Iterable<Object>{
         return new KeysReversed(this);
     }
 
-    public Keys(ValuesList values, Dictionary dic) {
+    public Keys(EntriesList values, Dictionary dic) {
         this.values = values;
         this.dic = dic;
     }

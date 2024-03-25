@@ -9,7 +9,7 @@ public class Dictionary implements Iterable<Object> {
     private final Integer DUMMY = -2;
     private final int initialCapacity = 8;
     private final IndexesList indexes = new IndexesList(null);
-    private final ValuesList values = new ValuesList(null);
+    private final EntriesList values = new EntriesList(null);
     private final static double GROWTH_RATE = 2.0/3;
     private int mask;
     private int index;

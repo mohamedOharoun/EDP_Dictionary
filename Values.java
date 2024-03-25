@@ -2,10 +2,10 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 public class Values implements Iterable<Object>{
-    private final EntriesList values;
+    private final EntriesList entries;
 
     public Values(EntriesList values) {
-        this.values = values;
+        this.entries = values;
     }
 
     @Override
@@ -22,8 +22,8 @@ public class Values implements Iterable<Object>{
         StringBuilder sb = new StringBuilder();
         sb.append("dict_values([");
         Entry temp;
-        for(int i = 0; i < values.capacity()-1; i++) {
-            temp = values.get(i);
+        for(int i = 0; i < entries.capacity()-1; i++) {
+            temp = entries.get(i);
             if(temp != null) {
                 if (temp.getValue() instanceof String || temp.getValue() instanceof Character) {
                     sb.append("\'"); sb.append(temp.getValue()); sb.append("\'");
@@ -31,7 +31,7 @@ public class Values implements Iterable<Object>{
                 sb.append(", ");
             }
         } 
-        temp = values.get(values.capacity()-1);
+        temp = entries.get(entries.capacity()-1);
         if (temp.getValue() instanceof String || temp.getValue() instanceof Character) {
             sb.append("\'"); sb.append(temp.getValue()); sb.append("\'");
         } else {sb.append(temp.getValue());}
@@ -40,7 +40,7 @@ public class Values implements Iterable<Object>{
     }
 
     public boolean contains(Object other) {
-        return values.containsValue(other);
+        return entries.containsValue(other);
     }
 
     private class ValuesIterator implements Iterator<Object> {
@@ -54,9 +54,9 @@ public class Values implements Iterable<Object>{
 
         @Override
         public boolean hasNext() {
-            if(index >= vals.values.capacity()) return false;
-            while(index <= vals.values.capacity()) {
-                if(vals.values.get(index) != null) return true;
+            if(index >= vals.entries.capacity()) return false;
+            while(index < vals.entries.capacity()) {
+                if(vals.entries.get(index) != null) return true;
                 index++;
             }
             return false;
@@ -65,7 +65,7 @@ public class Values implements Iterable<Object>{
         @Override
         public Object next() {
             if (hasNext()) {
-                return vals.values.get(index++).getValue();
+                return vals.entries.get(index++).getValue();
             }
             throw new NoSuchElementException();
         }
@@ -89,14 +89,14 @@ public class Values implements Iterable<Object>{
 
             public ValuesReversedIterator(Values values){
                 this.vals = values;
-                this.index = vals.values.capacity() - 1;
+                this.index = vals.entries.capacity() - 1;
             }
     
             @Override
             public boolean hasNext() {
                 if(index < 0) return false;
                 while(index >= 0) {
-                    if(vals.values.get(index) != null) return true;
+                    if(vals.entries.get(index) != null) return true;
                     index--;
                 }
                 return false;
@@ -105,7 +105,7 @@ public class Values implements Iterable<Object>{
             @Override
             public Object next() {
                 if (hasNext()) {
-                    return vals.values.get(index--).getValue();
+                    return vals.entries.get(index--).getValue();
                 }
                 throw new NoSuchElementException();
             }

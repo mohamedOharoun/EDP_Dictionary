@@ -1,39 +1,39 @@
 class EntriesList {
-    private Entry[] values;
+    private Entry[] entries;
     private int index = 0;
     private int n_entries = 0;
 
     public EntriesList(Entry[] values) {
-        this.values = values;
+        this.entries = values;
     }
 
     Entry get(int i) {
-        return values[i];
+        return entries[i];
     }
 
     void delete(int i) {
-        values[i] = null;
+        entries[i] = null;
         n_entries--;
     }
 
     void add(Entry obj) {
-        values[index] = obj;
+        entries[index] = obj;
         index++;
         n_entries++;
     }
 
     void setArray(Entry[] entries) {
-        values = entries;
+        this.entries = entries;
         index = 0;
         n_entries = 0;
     }
 
     void replace(int i, Entry obj) {
-        values[i] = obj;
+        entries[i] = obj;
     }
 
     int capacity() {
-        return values.length;
+        return entries.length;
     }
 
     int size() {
@@ -41,7 +41,7 @@ class EntriesList {
     }
 
     Entry[] getAll() {
-        return values;
+        return entries;
     }
 
     boolean containsValue(Object v) {

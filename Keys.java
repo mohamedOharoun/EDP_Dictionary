@@ -2,7 +2,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 public class Keys implements Iterable<Object>{
-    final private EntriesList values;
+    final private EntriesList entries;
     final private Dictionary dic;
 
     @Override
@@ -15,7 +15,7 @@ public class Keys implements Iterable<Object>{
     }
 
     public Keys(EntriesList values, Dictionary dic) {
-        this.values = values;
+        this.entries = values;
         this.dic = dic;
     }
 
@@ -24,7 +24,7 @@ public class Keys implements Iterable<Object>{
     }
 
     public int length() {
-        return values.size();
+        return entries.size();
     }
 
     private class KeysIterator implements Iterator<Object> {
@@ -38,9 +38,9 @@ public class Keys implements Iterable<Object>{
 
         @Override
         public boolean hasNext() {
-            if(index >= keys.values.capacity()) return false;
-            while(index <= keys.values.capacity()) {
-                if(keys.values.get(index) != null) return true;
+            if(index >= keys.entries.capacity()) return false;
+            while(index < keys.entries.capacity()) {
+                if(keys.entries.get(index) != null) return true;
                 index++;
             }
             return false;
@@ -49,7 +49,7 @@ public class Keys implements Iterable<Object>{
         @Override
         public Object next() {
             if (hasNext()) {
-                return keys.values.get(index++).getKey();
+                return keys.entries.get(index++).getKey();
             }
             throw new NoSuchElementException();
         }
@@ -74,14 +74,14 @@ public class Keys implements Iterable<Object>{
 
             public KeysReversedIterator(Keys keys){
                 this.keys = keys;
-                this.index = values.capacity() - 1;
+                this.index = entries.capacity() - 1;
             }
     
             @Override
             public boolean hasNext() {
                 if(index < 0) return false;
                 while(index >= 0) {
-                    if(keys.values.get(index) != null) return true;
+                    if(keys.entries.get(index) != null) return true;
                     index--;
                 }
                 return false;
@@ -90,7 +90,7 @@ public class Keys implements Iterable<Object>{
             @Override
             public Object next() {
                 if (hasNext()) {
-                    return keys.values.get(index--).getKey();
+                    return keys.entries.get(index--).getKey();
                 }
                 throw new NoSuchElementException();
             }
@@ -102,15 +102,15 @@ public class Keys implements Iterable<Object>{
         StringBuilder sb = new StringBuilder();
         sb.append("dict_keys([");
         Entry temp;
-        for(int i = 0; i < values.capacity()-1; i++) {
-            temp = values.get(i);
+        for(int i = 0; i < entries.capacity()-1; i++) {
+            temp = entries.get(i);
             if(temp != null) {
                 if((temp.getKey() instanceof String || temp.getKey() instanceof Character)) {
                     sb.append("\'"); sb.append(temp.getKey()); sb.append("\', ");
                 } else {sb.append(temp.getKey()); sb.append(", ");}
             }
         } 
-        temp = values.get(values.capacity()-1);
+        temp = entries.get(entries.capacity()-1);
         if((temp.getKey() instanceof String || temp.getKey() instanceof Character)) {
             sb.append("\'"); sb.append(temp.getKey()); sb.append("\'");
         } else {sb.append(temp.getKey());}

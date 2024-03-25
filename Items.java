@@ -2,7 +2,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 public class Items implements Iterable<Pair>{
-    private final EntriesList values;
+    private final EntriesList entries;
     private final Dictionary dict;
 
     @Override
@@ -15,7 +15,7 @@ public class Items implements Iterable<Pair>{
     }
 
     public Items(EntriesList values, Dictionary dict) {
-        this.values = values;
+        this.entries = values;
         this.dict = dict;
     }
 
@@ -26,7 +26,7 @@ public class Items implements Iterable<Pair>{
     }
 
     public int length() {
-        return values.size();
+        return entries.size();
     }
 
     private class ItemsIterator implements Iterator<Pair> {
@@ -40,9 +40,9 @@ public class Items implements Iterable<Pair>{
 
         @Override
         public boolean hasNext() {
-            if(index >= items.values.capacity()) return false;
-            while(index <= items.values.capacity()) {
-                if(items.values.get(index) != null) return true;
+            if(index >= items.entries.capacity()) return false;
+            while(index < items.entries.capacity()) {
+                if(items.entries.get(index) != null) return true;
                 index++;
             }
             return false;
@@ -51,7 +51,7 @@ public class Items implements Iterable<Pair>{
         @Override
         public Pair next() {
             if (hasNext()) {
-                return items.values.get(index++).getItem();
+                return items.entries.get(index++).getItem();
             }
             throw new NoSuchElementException();
         }
@@ -75,14 +75,14 @@ public class Items implements Iterable<Pair>{
 
             public ItemsReversedIterator(Items items){
                 this.items = items;
-                this.index = values.capacity() - 1;
+                this.index = entries.capacity() - 1;
             }
     
             @Override
             public boolean hasNext() {
                 if(index < 0) return false;
                 while(index >= 0) {
-                    if(items.values.get(index) != null) return true;
+                    if(items.entries.get(index) != null) return true;
                     index--;
                 }
                 return false;
@@ -91,7 +91,7 @@ public class Items implements Iterable<Pair>{
             @Override
             public Pair next() {
                 if (hasNext()) {
-                    return items.values.get(index--).getItem();
+                    return items.entries.get(index--).getItem();
                 }
                 throw new NoSuchElementException();
             }
@@ -104,13 +104,13 @@ public class Items implements Iterable<Pair>{
 
         sb.append("dict_items([");
         Entry temp;
-        for(int i = 0; i < values.capacity()-1; i++) {
-            temp = values.get(i);
+        for(int i = 0; i < entries.capacity()-1; i++) {
+            temp = entries.get(i);
             if(temp != null) {
                 sb.append(temp.toString()); sb.append(", ");
             }
         } 
-        temp = values.get(values.capacity()-1);
+        temp = entries.get(entries.capacity()-1);
         sb.append(temp.toString());
         sb.append("])");
         return sb.toString();

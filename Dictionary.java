@@ -396,7 +396,7 @@ public class Dictionary implements Iterable<Object> {
         if(valueIndex == -1) {
             put(key, d);
         }
-        return entries.get(valueIndex).getValue(); 
+        return entries.get(getElement(key)).getValue(); 
     }
 
     public Object setdefault(Object key) {
@@ -404,7 +404,7 @@ public class Dictionary implements Iterable<Object> {
         if(valueIndex == -1) {
             put(key, null);
         }
-        return entries.get(valueIndex).getValue(); 
+        return entries.get(getElement(key)).getValue(); 
     }
 
     public static Dictionary fromkeys(Object[] keys, Object value) {

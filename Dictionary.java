@@ -3,6 +3,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class Dictionary implements Iterable<Object> {
     private final static Object UNUSED = null;
@@ -68,6 +69,7 @@ public class Dictionary implements Iterable<Object> {
     }
 
     private void addElement(Entry newEntry) {
+        if(isMutable(newEntry.getKey())) throw new TypeError(newEntry.getKey());
         int hash = newEntry.getHash();
         int pseudoKey = hash & mask;
         boolean stay = true;
@@ -105,7 +107,19 @@ public class Dictionary implements Iterable<Object> {
         return entries.size();
     }
 
+    private boolean isMutable(Object key) {
+        if(
+            key instanceof List ||
+            key instanceof Set ||
+            key instanceof Map ||
+            key instanceof Dictionary ||
+            key.getClass().isArray()            
+        ) return true;
+        return false;
+    }
+
     private int getElement(Object key) {
+        if(isMutable(key)) throw new TypeError(key);
         int hash = key.hashCode();
         final int keyHash = hash;
         int pseudoKey = hash & mask;
@@ -131,6 +145,7 @@ public class Dictionary implements Iterable<Object> {
     }
 
     private int deleteElement(Object key) {
+        if(isMutable(key)) throw new TypeError(key);
         int hash = key.hashCode();
         final int keyHash = hash;
         int pseudoKey = hash & mask;
@@ -154,7 +169,6 @@ public class Dictionary implements Iterable<Object> {
                 tempIndex = indexes.get(pseudoKey);            
             }
         }
-
         return 0;
     }
 

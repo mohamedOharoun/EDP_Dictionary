@@ -2,3 +2,5 @@
 Main.*
 *.class
 /bin
+/lib
+Dummy*.java

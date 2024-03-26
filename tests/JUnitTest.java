@@ -2,9 +2,7 @@ import static org.junit.Assert.*;
 import java.util.*;
 import org.junit.Test;
 
-
 public class JUnitTest {
-
     @Test
     public void testPopItem() {
         Dictionary dictionary = new Dictionary();

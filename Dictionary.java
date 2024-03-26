@@ -350,7 +350,10 @@ public class Dictionary implements Iterable<Object> {
      */
     public Object get(Object key) {
         int valueIndex = getElement(key);
-        if(valueIndex == -1) throw new KeyError(key);
+        if(valueIndex == -1) {
+            if(this instanceof Missing) return ((Missing<?>)this).missing(key);
+            throw new KeyError(key);
+        }
         return entries.get(valueIndex).getValue();
     }
 

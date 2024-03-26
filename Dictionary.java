@@ -5,12 +5,12 @@ import java.util.List;
 import java.util.Map;
 
 public class Dictionary implements Iterable<Object> {
-    private final Object UNUSED = null;
-    private final Integer DUMMY = -2;
-    private final int initialCapacity = 8;
+    private final static Object UNUSED = null;
+    private final static Integer DUMMY = -2;
+    private final static double GROWTH_RATE = 2.0/3;
+    private final static int initialCapacity = 8;
     private final IndexesList indexes = new IndexesList(null);
     private final EntriesList entries = new EntriesList(null);
-    private final static double GROWTH_RATE = 2.0/3;
     private int mask;
     private int index;
 

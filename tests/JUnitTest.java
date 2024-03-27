@@ -237,12 +237,12 @@ public class JUnitTest {
 
 
         // Verifico que el valor de la clave es correcto
-        assertEquals("value1", dictionary.get("key1"));
-        assertEquals(3, dictionary.get(""));
-        assertEquals("value3", dictionary.get("key3"));
-        assertThrows(KeyError.class, () -> dictionary.get("key5"));
-        assertEquals(3, dictionary.get(""));
-        assertEquals("32", dictionary.get("key4"));
+        assertEquals("value1", dictionary.retrieve("key1"));
+        assertEquals(3, dictionary.retrieve(""));
+        assertEquals("value3", dictionary.retrieve("key3"));
+        assertThrows(KeyError.class, () -> dictionary.retrieve("key5"));
+        assertEquals(3, dictionary.retrieve(""));
+        assertEquals("32", dictionary.retrieve("key4"));
     }
 
      @Test
@@ -266,8 +266,8 @@ public class JUnitTest {
         dictionary.del("key1");
 
         // Verifico que los elementos han sido eliminados.
-        assertThrows(KeyError.class, () -> dictionary.get(3));
-        assertEquals(4.321, dictionary.get(4.5));
+        assertThrows(KeyError.class, () -> dictionary.retrieve(3));
+        assertEquals(4.321, dictionary.retrieve(4.5));
         assertEquals(2, dictionary.length());
         
      }   

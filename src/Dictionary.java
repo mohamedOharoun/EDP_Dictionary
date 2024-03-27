@@ -73,6 +73,8 @@ public class Dictionary implements Iterable<Object> {
         int hash = newEntry.getHash();
         int pseudoKey = hash & mask;
         boolean stay = true;
+        boolean isDelete = false;
+        int deletePosition = -1;
         Integer temp;
         while(stay) {
             temp = indexes.get(pseudoKey);
@@ -81,22 +83,27 @@ public class Dictionary implements Iterable<Object> {
                     resize();
                     addElement(newEntry);
                 } else {
-                    indexes.put(pseudoKey, index);
+                    if(isDelete) {
+                        indexes.put(deletePosition, index);
+                    } else {
+                        indexes.put(pseudoKey, index);
+                    }
                     entries.add(newEntry);
                     index++;
                 }
                 stay = false;
-            }else if(temp == DUMMY) {
-                indexes.put(pseudoKey, index);
-                entries.add(newEntry);
-                index++;
             }else if(
-                    entries.get(temp).getHash() == newEntry.getHash() 
+                    temp != DUMMY
+                    && entries.get(temp).getHash() == newEntry.getHash() 
                     && entries.get(temp).getKey().equals(newEntry.getKey())
                 ) {
                 entries.replace(temp, newEntry);
                 stay = false;
             }else {
+                if(temp == DUMMY) {
+                    isDelete = true;
+                    deletePosition = pseudoKey;
+                }
                 hash >>>= 5;
                 pseudoKey = getNextIndex(pseudoKey, hash);
             }
@@ -118,7 +125,7 @@ public class Dictionary implements Iterable<Object> {
         return false;
     }
 
-    private int getElement(Object key) {
+    private int[] getElement(Object key) {
         if(isMutable(key)) throw new TypeError(key);
         int hash = key.hashCode();
         final int keyHash = hash;
@@ -127,7 +134,7 @@ public class Dictionary implements Iterable<Object> {
         boolean stay = true;
         while (stay) {
             if(tempIndex == UNUSED) {
-                return -1;
+                return new int[]{-1, -1};
             }
             if(
                 tempIndex != DUMMY 
@@ -141,34 +148,14 @@ public class Dictionary implements Iterable<Object> {
                 tempIndex = indexes.get(pseudoKey);
             }
         }
-        return tempIndex;
+        return  new int[]{tempIndex, pseudoKey};
     }
 
     private int deleteElement(Object key) {
-        if(isMutable(key)) throw new TypeError(key);
-        int hash = key.hashCode();
-        final int keyHash = hash;
-        int pseudoKey = hash & mask;
-        Integer tempIndex = indexes.get(pseudoKey);
-        boolean stay = true;
-        while (stay) {
-            if(tempIndex == UNUSED) {
-                return -1;
-            }
-            if(
-                tempIndex != DUMMY 
-                && entries.get(tempIndex).getHash() == keyHash
-                && entries.get(tempIndex).getKey().equals(key)
-                ) {
-                indexes.put(pseudoKey, DUMMY);
-                entries.delete(tempIndex);
-                stay = false;
-            } else {
-                hash >>>= 5;
-                pseudoKey = getNextIndex(pseudoKey, hash);
-                tempIndex = indexes.get(pseudoKey);            
-            }
-        }
+        int[] positions = getElement(key);
+        if(positions[0] == -1) return -1;
+        indexes.put(positions[1], DUMMY);
+        entries.delete(positions[0]);
         return 0;
     }
 
@@ -246,7 +233,7 @@ public class Dictionary implements Iterable<Object> {
      * @return Valor booleano que indica si está en el diccionario.
      */
     public boolean contains(Object key) {
-        return getElement(key) == -1 ? false : true;
+        return getElement(key)[0] == -1 ? false : true;
     }
 
     private static int getUpperPowerOfTwo(int v) {
@@ -363,7 +350,7 @@ public class Dictionary implements Iterable<Object> {
      * @return El valor de la clave.
      */
     public Object retrieve(Object key) {
-        int valueIndex = getElement(key);
+        int valueIndex = getElement(key)[0];
         if(valueIndex == -1) {
             if(this instanceof Missing) return ((Missing)this).missing(key);
             throw new KeyError(key);
@@ -372,13 +359,13 @@ public class Dictionary implements Iterable<Object> {
     }
 
     public Object get(Object key) {
-        int valueIndex = getElement(key);
+        int valueIndex = getElement(key)[0];
         if(valueIndex == -1) return null;
         return entries.get(valueIndex).getValue();
     }
 
     public Object get(Object key, Object d) {
-        int valueIndex = getElement(key);
+        int valueIndex = getElement(key)[0];
         if(valueIndex == -1) return d;
         return entries.get(valueIndex).getValue();
     }
@@ -399,7 +386,7 @@ public class Dictionary implements Iterable<Object> {
      * @return El valor del elemento eliminado.
      */
     public Object pop(Object key) {
-        int valueIndex = getElement(key);
+        int valueIndex = getElement(key)[0];
         if(valueIndex == -1) throw new KeyError(key);
         Object v = entries.get(valueIndex).getValue();
         deleteElement(key);
@@ -407,7 +394,7 @@ public class Dictionary implements Iterable<Object> {
     }
 
     public Object pop(Object key, Object d) {
-        int valueIndex = getElement(key);
+        int valueIndex = getElement(key)[0];
         if(valueIndex == -1) return d;
         Object v = entries.get(valueIndex).getValue(); 
         deleteElement(key);
@@ -415,19 +402,19 @@ public class Dictionary implements Iterable<Object> {
     }
 
     public Object setdefault(Object key, Object d) {
-        int valueIndex = getElement(key);
+        int valueIndex = getElement(key)[0];
         if(valueIndex == -1) {
             put(key, d);
         }
-        return entries.get(getElement(key)).getValue(); 
+        return entries.get(getElement(key)[0]).getValue(); 
     }
 
     public Object setdefault(Object key) {
-        int valueIndex = getElement(key);
+        int valueIndex = getElement(key)[0];
         if(valueIndex == -1) {
             put(key, null);
         }
-        return entries.get(getElement(key)).getValue(); 
+        return entries.get(getElement(key)[0]).getValue(); 
     }
 
     public static Dictionary fromkeys(Object[] keys, Object value) {
@@ -438,7 +425,7 @@ public class Dictionary implements Iterable<Object> {
         return newDict;
     }
 
-private static int calculateIterableSize(Iterable<?> iter) {
+    private static int calculateIterableSize(Iterable<?> iter) {
         if(iter instanceof Collection) {
             return ((Collection<?>) iter).size();
         } else {
@@ -520,7 +507,7 @@ private static int calculateIterableSize(Iterable<?> iter) {
         if(this.length() != o.length()) return false;
         int i;
         for(Object k : this.keys()) {
-            i = o.getElement(k);
+            i = o.getElement(k)[0];
             if(i == -1) return false;
             if(!this.get(k).equals(o.entries.get(i).getValue())) return false;
         }

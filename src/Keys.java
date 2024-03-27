@@ -105,16 +105,14 @@ public class Keys implements Iterable<Object>{
         for(int i = 0; i < entries.capacity()-1; i++) {
             temp = entries.get(i);
             if(temp != null) {
+                if(sb.length() != 11) sb.append(", ");
                 if((temp.getKey() instanceof String || temp.getKey() instanceof Character)) {
-                    sb.append("\'"); sb.append(temp.getKey()); sb.append("\', ");
-                } else {sb.append(temp.getKey()); sb.append(", ");}
+                    sb.append("\'"); sb.append(temp.getKey()); sb.append("\'");
+                } else sb.append(temp.getKey());
             }
         } 
-        temp = entries.get(entries.capacity()-1);
-        if((temp.getKey() instanceof String || temp.getKey() instanceof Character)) {
-            sb.append("\'"); sb.append(temp.getKey()); sb.append("\'");
-        } else {sb.append(temp.getKey());}
-        sb.append(")]");
+        
+        sb.append("])");
         return sb.toString();
     }
 }

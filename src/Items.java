@@ -107,11 +107,10 @@ public class Items implements Iterable<Pair>{
         for(int i = 0; i < entries.capacity()-1; i++) {
             temp = entries.get(i);
             if(temp != null) {
-                sb.append(temp.toString()); sb.append(", ");
+                if(sb.length() != 12) sb.append(", ");
+                sb.append(temp.toString());
             }
-        } 
-        temp = entries.get(entries.capacity()-1);
-        sb.append(temp.toString());
+        }
         sb.append("])");
         return sb.toString();
     }

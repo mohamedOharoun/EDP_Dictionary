@@ -25,16 +25,13 @@ public class Values implements Iterable<Object>{
         for(int i = 0; i < entries.capacity()-1; i++) {
             temp = entries.get(i);
             if(temp != null) {
-                if (temp.getValue() instanceof String || temp.getValue() instanceof Character) {
+                if(sb.length() != 13) sb.append(", ");
+                if((temp.getValue() instanceof String || temp.getValue() instanceof Character)) {
                     sb.append("\'"); sb.append(temp.getValue()); sb.append("\'");
-                } else {sb.append(temp.getValue());}
-                sb.append(", ");
+                } else sb.append(temp.getValue());
             }
         } 
-        temp = entries.get(entries.capacity()-1);
-        if (temp.getValue() instanceof String || temp.getValue() instanceof Character) {
-            sb.append("\'"); sb.append(temp.getValue()); sb.append("\'");
-        } else {sb.append(temp.getValue());}
+        
         sb.append("])");
         return sb.toString();
     }

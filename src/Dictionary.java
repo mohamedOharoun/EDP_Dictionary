@@ -43,6 +43,10 @@ public class Dictionary implements Iterable<Object> {
         setDictionary(n);
     }
 
+    public int length() {
+        return entries.size();
+    }
+
     private void setDictionary(int newCapacity) {
         indexes.setArray(new Integer[newCapacity]);
         entries.setArray(new Entry[(int) Math.round(newCapacity * GROWTH_RATE)]);
@@ -62,15 +66,6 @@ public class Dictionary implements Iterable<Object> {
 
     private int getNextIndex(int index, int hash) {
         return (index * 5 + hash + 1) & mask;
-    }
-
-    @Override
-    public Iterator<Object> iterator() {
-        return new Keys(entries, this).iterator();
-    }
-
-    public Iterable<Object> reversed() {
-        return new Keys(entries, this).reversed();
     }
 
     private void addElement(Entry newEntry) {
@@ -113,10 +108,6 @@ public class Dictionary implements Iterable<Object> {
                 pseudoKey = getNextIndex(pseudoKey, hash);
             }
         }
-    }
-
-    public int length() {
-        return entries.size();
     }
 
     private boolean isMutable(Object key) {
@@ -164,83 +155,6 @@ public class Dictionary implements Iterable<Object> {
         return 0;
     }
 
-    /**
-     * Este método recorre los elementos del diccionario y los inserta en una StringBuilder().
-     * 
-     * @return El diccionario en formato String (la StringBuilder()).
-     */
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("{");
-        Entry temp;
-        for(int i = 0; i < index; i++) {
-            temp = entries.get(i);
-            if(temp != null) {
-                if(sb.length() != 1) sb.append(", ");
-                if(temp.getKey() instanceof String || temp.getKey() instanceof Character) {
-                    sb.append(String.format("'%s': ", temp.getKey()));
-                } else {
-                    sb.append(temp.getKey() + ": ");
-                }
-
-                if(temp.getValue() instanceof String || temp.getValue() instanceof Character) {
-                    sb.append(String.format("'%s'", temp.getValue()));
-                } else {
-                    sb.append(temp.getValue() + "");
-                }
-            }
-        }
-        
-        sb.append("}");
-
-        return sb.toString();
-    }
-
-    /**
-     * Este método accede a los valores del diccionario.
-     * 
-     * @return Los valores del diccionario.
-     */
-    public Values values() {
-        return new Values(entries);
-    }
-
-    /**
-     * Este método accede a las claves del diccionario.
-     * 
-     * @return Las claves del diccionario.
-     */
-    public Keys keys() {
-        return new Keys(entries, this);
-    }
-
-    /**
-     * Este método accede a los elementos del diccionario.
-     * 
-     * @return Los elementos del diccionario (clave, valor).
-     */
-    public Items items() {
-        return new Items(entries, this);
-    }
-
-    /**
-     * Este método elimina todos los elementos del diccionario.
-     */
-    public void clear() {
-        setDictionary(initialCapacity);
-    }
-
-    /**
-     * Este método busca si una clave está ya en el diccionario.
-     * 
-     * @param key La clave que se busca.
-     * @return Valor booleano que indica si está en el diccionario.
-     */
-    public boolean contains(Object key) {
-        return getElement(key)[0] == -1 ? false : true;
-    }
-
     private static int getUpperPowerOfTwo(int v) {
         v--;
         v |= v >> 1;
@@ -256,6 +170,16 @@ public class Dictionary implements Iterable<Object> {
         int new_size = getUpperPowerOfTwo(n);
         if(new_size * GROWTH_RATE < n) new_size <<= 1;
         return new_size;
+    }
+
+    private static int calculateIterableSize(Iterable<?> iter) {
+        if(iter instanceof Collection) {
+            return ((Collection<?>) iter).size();
+        } else {
+            int size = 0;
+            for(@SuppressWarnings("unused") Object i : iter) size++;
+            return size;
+        }
     }
 
     /**
@@ -415,11 +339,7 @@ public class Dictionary implements Iterable<Object> {
     }
 
     public Object setdefault(Object key) {
-        int valueIndex = getElement(key)[0];
-        if(valueIndex == -1) {
-            put(key, null);
-        }
-        return entries.get(getElement(key)[0]).getValue(); 
+        return setdefault(key, null); 
     }
 
     public static Dictionary fromkeys(Object[] keys, Object value) {
@@ -428,16 +348,6 @@ public class Dictionary implements Iterable<Object> {
             newDict.addElement(new Entry(k, value));
         }
         return newDict;
-    }
-
-    private static int calculateIterableSize(Iterable<?> iter) {
-        if(iter instanceof Collection) {
-            return ((Collection<?>) iter).size();
-        } else {
-            int size = 0;
-            for(@SuppressWarnings("unused") Object i : iter) size++;
-            return size;
-        }
     }
 
     /** Este método crea un diccionario con elementos nuevos.
@@ -460,11 +370,7 @@ public class Dictionary implements Iterable<Object> {
      * @return
      */
     public static Dictionary fromkeys(Object[] keys) {
-        Dictionary newDict = new Dictionary(calculateProperSize(keys.length));
-        for(Object k : keys) {
-            newDict.addElement(new Entry(k, null));
-        }
-        return newDict;
+        return fromkeys(keys, null);
     }
 
     /**
@@ -473,11 +379,7 @@ public class Dictionary implements Iterable<Object> {
      * @return
      */
     public static Dictionary fromkeys(Iterable<?> keys) {
-        Dictionary newDict = new Dictionary();
-        for(Object k : keys) {
-            newDict.addElement(new Entry(k, null));
-        }
-        return newDict;
+        return fromkeys(keys, null);
     }
 
     /**
@@ -517,5 +419,91 @@ public class Dictionary implements Iterable<Object> {
             if(!this.get(k).equals(o.entries.get(i).getValue())) return false;
         }
         return true;
+    }
+
+    /**
+     * Este método recorre los elementos del diccionario y los inserta en una StringBuilder().
+     * 
+     * @return El diccionario en formato String (la StringBuilder()).
+     */
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("{");
+        Entry temp;
+        for(int i = 0; i < index; i++) {
+            temp = entries.get(i);
+            if(temp != null) {
+                if(sb.length() != 1) sb.append(", ");
+                if(temp.getKey() instanceof String || temp.getKey() instanceof Character) {
+                    sb.append(String.format("'%s': ", temp.getKey()));
+                } else {
+                    sb.append(temp.getKey() + ": ");
+                }
+
+                if(temp.getValue() instanceof String || temp.getValue() instanceof Character) {
+                    sb.append(String.format("'%s'", temp.getValue()));
+                } else {
+                    sb.append(temp.getValue() + "");
+                }
+            }
+        }
+        
+        sb.append("}");
+
+        return sb.toString();
+    }
+
+    /**
+     * Este método accede a los valores del diccionario.
+     * 
+     * @return Los valores del diccionario.
+     */
+    public Values values() {
+        return new Values(entries);
+    }
+
+    /**
+     * Este método accede a las claves del diccionario.
+     * 
+     * @return Las claves del diccionario.
+     */
+    public Keys keys() {
+        return new Keys(entries, this);
+    }
+
+    /**
+     * Este método accede a los elementos del diccionario.
+     * 
+     * @return Los elementos del diccionario (clave, valor).
+     */
+    public Items items() {
+        return new Items(entries, this);
+    }
+
+    /**
+     * Este método elimina todos los elementos del diccionario.
+     */
+    public void clear() {
+        setDictionary(initialCapacity);
+    }
+
+    /**
+     * Este método busca si una clave está ya en el diccionario.
+     * 
+     * @param key La clave que se busca.
+     * @return Valor booleano que indica si está en el diccionario.
+     */
+    public boolean contains(Object key) {
+        return getElement(key)[0] == -1 ? false : true;
+    }
+
+    @Override
+    public Iterator<Object> iterator() {
+        return new Keys(entries, this).iterator();
+    }
+
+    public Iterable<Object> reversed() {
+        return new Keys(entries, this).reversed();
     }
 }

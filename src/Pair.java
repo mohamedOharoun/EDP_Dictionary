@@ -1,8 +1,7 @@
 import java.util.Arrays;
 
 public class Pair {
-    protected final Object[] pairs = new Object[2];
-    
+    private final Object[] pairs = new Object[2];
 
     public Pair(Object obj1, Object obj2) {
         this.pairs[0] = obj1;

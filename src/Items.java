@@ -101,13 +101,13 @@ public class Items implements Iterable<Pair>{
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-
-        sb.append("dict_items([");
+        final String opening = "dict_items([";
+        sb.append(opening);
         Entry temp;
         for(int i = 0; i < entries.capacity()-1; i++) {
             temp = entries.get(i);
             if(temp != null) {
-                if(sb.length() != 12) sb.append(", ");
+                if(sb.length() != opening.length()) sb.append(", ");
                 sb.append(temp.toString());
             }
         }

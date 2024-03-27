@@ -100,12 +100,13 @@ public class Keys implements Iterable<Object>{
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("dict_keys([");
+        final String opening = "dict_keys([";
+        sb.append(opening);
         Entry temp;
         for(int i = 0; i < entries.capacity()-1; i++) {
             temp = entries.get(i);
             if(temp != null) {
-                if(sb.length() != 11) sb.append(", ");
+                if(sb.length() != opening.length()) sb.append(", ");
                 if((temp.getKey() instanceof String || temp.getKey() instanceof Character)) {
                     sb.append("\'"); sb.append(temp.getKey()); sb.append("\'");
                 } else sb.append(temp.getKey());

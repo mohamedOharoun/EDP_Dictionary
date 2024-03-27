@@ -1,7 +1,7 @@
 class IndexesList {
     private Integer[] indexes;
 
-    public IndexesList(Integer[] indexes) {
+    IndexesList(Integer[] indexes) {
         this.indexes = indexes;
     }
 

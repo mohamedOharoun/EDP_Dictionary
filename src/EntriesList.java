@@ -3,7 +3,7 @@ class EntriesList {
     private int index = 0;
     private int n_entries = 0;
 
-    public EntriesList(Entry[] values) {
+    EntriesList(Entry[] values) {
         this.entries = values;
     }
 

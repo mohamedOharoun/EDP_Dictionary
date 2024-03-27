@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 public class Pair {
     protected final Object[] pairs = new Object[2];
     
@@ -22,6 +24,29 @@ public class Pair {
      */
     @Override
     public String toString() {
-        return String.format("(%s, %s)", pairs[0], pairs[1]);
+        StringBuilder sb = new StringBuilder();
+        sb.append("(");
+        if((get(0) instanceof String || get(0) instanceof Character)) {
+            sb.append("\'"); sb.append(get(0)); sb.append("\'");
+        } else {sb.append(get(0));}
+        sb.append(", ");
+        if((get(1) instanceof String || get(1) instanceof Character)) {
+            sb.append("\'"); sb.append(get(1)); sb.append("\'");
+        } else {sb.append(get(1));}
+        sb.append(")");  
+
+        return sb.toString();
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.hashCode(pairs);
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if(!(other instanceof Pair)) return false;
+        Pair o = (Pair) other;
+        return pairs[0].equals(o.get(0)) && pairs[1].equals(o.get(1));
     }
 }

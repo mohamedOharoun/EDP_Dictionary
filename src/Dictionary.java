@@ -34,6 +34,11 @@ public class Dictionary implements Iterable<Object> {
         this.update(m);
     }
 
+    public Dictionary(Dictionary d)  {
+        this.setDictionary(calculateProperSize(d.length()));
+        this.update(d);
+    }
+
     private Dictionary(int n) {
         setDictionary(n);
     }

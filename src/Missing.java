@@ -1,3 +1,3 @@
-public interface Missing<T> {
-    public T missing(Object key);
+public interface Missing {
+    public Object missing(Object key);
 }

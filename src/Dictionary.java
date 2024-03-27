@@ -362,12 +362,18 @@ public class Dictionary implements Iterable<Object> {
      * @param key La clave que se quiere buscar.
      * @return El valor de la clave.
      */
-    public Object get(Object key) {
+    public Object retrieve(Object key) {
         int valueIndex = getElement(key);
         if(valueIndex == -1) {
-            if(this instanceof Missing) return ((Missing<?>)this).missing(key);
+            if(this instanceof Missing) return ((Missing)this).missing(key);
             throw new KeyError(key);
         }
+        return entries.get(valueIndex).getValue();
+    }
+
+    public Object get(Object key) {
+        int valueIndex = getElement(key);
+        if(valueIndex == -1) return null;
         return entries.get(valueIndex).getValue();
     }
 

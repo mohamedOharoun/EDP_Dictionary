@@ -52,6 +52,7 @@ class EntriesList {
         while(i < capacity && numVisited < numValues) {
             if(get(i) != null) {
                 numVisited++;
+                if(v == get(i).getValue()) return true;
                 if(v.equals(get(i).getValue())) return true;
             }
             i++;

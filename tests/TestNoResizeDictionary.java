@@ -130,7 +130,7 @@ public class TestNoResizeDictionary {
      */
     @Test
     public void testRetrieve() {
-        assertEquals(1, d.get("Key 1"));
+        assertEquals(1, d.retrieve("Key 1"));
         assertThrows( KeyError.class, () -> {
             d.retrieve("Key 5");
         });
@@ -350,5 +350,35 @@ public class TestNoResizeDictionary {
             assertTrue(listTest.get(i).equals(key));
             i++;
         }
+    }
+
+    /*
+     * Prueba de Keys length.
+     */
+    @Test
+    public void testKeysLength() {
+        Keys ks = d.keys();
+        assertEquals(d.length(), ks.length());
+        d.put("Key 3", 3);
+        assertEquals(d.length(), ks.length());
+        d.del("Key 1");
+        d.del("Key 2");
+        assertEquals(d.length(), ks.length());
+    }
+
+    /*
+     * Prueba de Keys contains.
+     */
+    @Test
+    public void testKeysContains() {
+        Keys ks = d.keys();
+        for(Object k : d) {
+            assertTrue(ks.contains(k));
+        }
+        String deletedKey = "Key 0";
+        d.del(deletedKey);
+        assertFalse(ks.contains(deletedKey));
+        d.put("Key 3", 3);
+        assertTrue(ks.contains("Key 3"));
     }
 }

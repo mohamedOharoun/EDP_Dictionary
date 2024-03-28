@@ -53,7 +53,7 @@ class EntriesList {
             if(get(i) != null) {
                 numVisited++;
                 if(v == get(i).getValue()) return true;
-                if(v.equals(get(i).getValue())) return true;
+                if(get(i).getValue().equals(v)) return true;
             }
             i++;
         }

@@ -45,7 +45,7 @@ class EntriesList {
     }
 
     boolean containsValue(Object v) {
-        for(int i = 0; i < size(); i++) {
+        for(int i = 0; i < capacity(); i++) {
             if(get(i) == null) continue;
             if(v.equals(get(i).getValue())) return true;
         }

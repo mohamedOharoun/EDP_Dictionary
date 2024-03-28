@@ -98,7 +98,7 @@ public class TestNoResizeDictionary {
     }
 
     /*
-     * Prueba de update pasando Map de Pair con una clave nueva y otra clave ya repetida.
+     * Prueba de update pasando un Map con una clave nueva y otra clave ya repetida.
      */
     @Test
     public void testUpdateMap() {
@@ -294,6 +294,7 @@ public class TestNoResizeDictionary {
             assertTrue(listTest.get(i).equals(key));
             i++;
         }
+        assertEquals("Number of iterations must be equal to size of list",listTest.size(), i);
     }
 
     /*
@@ -380,5 +381,148 @@ public class TestNoResizeDictionary {
         assertFalse(ks.contains(deletedKey));
         d.put("Key 3", 3);
         assertTrue(ks.contains("Key 3"));
+    }
+
+    /*
+     * Prueba de Values, iterador.
+     */
+    @Test
+    public void testValuesIterator() {
+        List<Integer> listTest = new ArrayList<>();
+        listTest.add(0);
+        listTest.add(1);
+        listTest.add(3);
+        int i = 0;
+        Values vs = d.values();
+        d.put("Key 3", 3);
+        d.del("Key 2");
+        for(Object v : vs) {
+            assertTrue(listTest.get(i).equals(v));
+            i++;
+        }
+    }
+
+    /*
+     * Prueba de Values reversed.
+     */
+    @Test
+    public void testValuesReversed() {
+        List<Integer> listTest = new ArrayList<>();
+        listTest.add(0);
+        listTest.add(1);
+        listTest.add(3);
+        Collections.reverse(listTest);
+        Values vs = d.values();
+        d.put("Key 3", 3);
+        d.del("Key 2");
+        int i = 0;
+        for(Object v : vs.reversed()) {
+            assertTrue(listTest.get(i).equals(v));
+            i++;
+        }
+    }
+
+    /*
+     * Prueba de Values length.
+     */
+    @Test
+    public void testValuesLength() {
+        Values vs = d.values();
+        assertEquals(d.length(), vs.length());
+        d.put("Key 3", 3);
+        assertEquals(d.length(), vs.length());
+        d.del("Key 1");
+        d.del("Key 2");
+        assertEquals(d.length(), vs.length());
+    }
+
+    /*
+     * Prueba de Values contains.
+     */
+    @Test
+    public void testValuesContains() {
+        Values vs = d.values();
+        d.put("Key 3",3);
+        for(Object k : d) {
+            assertTrue(vs.contains(d.get(k)));
+        }
+        String deletedKey = "Key 0";
+        d.del(deletedKey);
+        assertFalse(vs.contains(0));
+        d.put("Key 3",3);
+        assertTrue(vs.contains(3));
+    }
+
+    /*
+     * Prueba de Items, iterador.
+     */
+    @Test
+    public void testItemsIterator() {
+        List<Pair> listTest = new ArrayList<>();
+        listTest.add(new Pair("Key 0", 0));
+        listTest.add(new Pair("Key 1", 1));
+        listTest.add(new Pair("Key 3", 3));
+        int i = 0;
+        Items items = d.items();
+        d.put("Key 3", 3);
+        d.del("Key 2");
+        for(Object item : items) {
+            assertTrue(listTest.get(i).equals(item));
+            i++;
+        }
+    }
+
+    /*
+     * Prueba de Items reversed.
+     */
+    @Test
+    public void testItemsReversed() {
+        List<Pair> listTest = new ArrayList<>();
+        listTest.add(new Pair("Key 0", 0));
+        listTest.add(new Pair("Key 1", 1));
+        listTest.add(new Pair("Key 3", 3));
+        int i = 0;
+        Collections.reverse(listTest);
+        Items items = d.items();
+        d.put("Key 3", 3);
+        d.del("Key 2");
+        for(Object item : items.reversed()) {
+            assertTrue(listTest.get(i).equals(item));
+            i++;
+        }
+    }
+
+    /*
+     * Prueba de Items length.
+     */
+    @Test
+    public void testItemsLength() {
+        Items items = d.items();
+        assertEquals(d.length(), items.length());
+        d.put("Key 3", 3);
+        assertEquals(d.length(), items.length());
+        d.del("Key 1");
+        d.del("Key 2");
+        assertEquals(d.length(), items.length());
+    }
+
+    /*
+     * Prueba de Items contains.
+     */
+    @Test
+    public void testItemsContains() {
+        Items items = d.items();
+        d.put("Key 3",3);
+        int i = 0;
+        for(Object k : d) {
+            assertTrue(items.contains(new Pair(k, i)));
+            i++;
+        }
+        String deletedKey = "Key 0";
+        d.del(deletedKey);
+        assertFalse(items.contains(new Pair("Key 0", 0)));
+        d.put("Key 4",4);
+        assertTrue(items.contains(new Pair("Key 4",4)));
+        assertFalse(items.contains(new Pair("Key 4",5)));
     }
 }

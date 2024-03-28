@@ -1,7 +1,7 @@
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class Values implements Iterable<Object>{
+public class Values implements Iterable<Object>, ObjectView<Object> {
     private final EntriesList entries;
 
     public Values(EntriesList values) {
@@ -17,24 +17,8 @@ public class Values implements Iterable<Object>{
         return new ValuesReversed(this);
     }
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        final String opening = "dict_values([";
-        sb.append(opening);
-        Entry temp;
-        for(int i = 0; i < entries.capacity()-1; i++) {
-            temp = entries.get(i);
-            if(temp != null) {
-                if(sb.length() != opening.length()) sb.append(", ");
-                if((temp.getValue() instanceof String || temp.getValue() instanceof Character)) {
-                    sb.append("\'"); sb.append(temp.getValue()); sb.append("\'");
-                } else sb.append(temp.getValue());
-            }
-        } 
-        
-        sb.append("])");
-        return sb.toString();
+    public int length() {
+        return entries.size();
     }
 
     public boolean contains(Object other) {
@@ -108,5 +92,25 @@ public class Values implements Iterable<Object>{
                 throw new NoSuchElementException();
             }
         }  
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        final String opening = "dict_values([";
+        sb.append(opening);
+        Entry temp;
+        for(int i = 0; i < entries.capacity()-1; i++) {
+            temp = entries.get(i);
+            if(temp != null) {
+                if(sb.length() != opening.length()) sb.append(", ");
+                if((temp.getValue() instanceof String || temp.getValue() instanceof Character)) {
+                    sb.append("\'"); sb.append(temp.getValue()); sb.append("\'");
+                } else sb.append(temp.getValue());
+            }
+        } 
+        
+        sb.append("])");
+        return sb.toString();
     }
 }

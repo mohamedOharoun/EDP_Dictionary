@@ -45,9 +45,16 @@ class EntriesList {
     }
 
     boolean containsValue(Object v) {
-        for(int i = 0; i < capacity(); i++) {
-            if(get(i) == null) continue;
-            if(v.equals(get(i).getValue())) return true;
+        int i, numVisited;
+        i = numVisited = 0;
+        final int capacity = capacity();
+        final int numValues = size();
+        while(i < capacity && numVisited < numValues) {
+            if(get(i) != null) {
+                numVisited++;
+                if(v.equals(get(i).getValue())) return true;
+            }
+            i++;
         }
         return false;
     }

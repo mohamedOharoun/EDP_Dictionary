@@ -169,6 +169,7 @@ public class Dictionary implements Iterable<Object> {
     private static int calculateProperSize(int n) {
         int new_size = getUpperPowerOfTwo(n);
         if(new_size * GROWTH_RATE < n) new_size <<= 1;
+        if(new_size <= initialCapacity) return initialCapacity;
         return new_size;
     }
 

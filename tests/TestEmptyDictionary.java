@@ -1,4 +1,6 @@
 import static org.junit.Assert.*;
+
+import java.lang.reflect.Array;
 import java.util.*;
 import org.junit.Before;
 import org.junit.Test;
@@ -169,7 +171,7 @@ public class TestEmptyDictionary {
         assertEquals("value2", dictionary.get(2));
 
         List<Pair> newKey3 = new ArrayList<>();
-        newKey3.add(new Pair(new ArrayList(1), "value"));
+        newKey3.add(new Pair(new ArrayList<>(1), "value"));
         assertThrows(TypeError.class, () -> dictionary.update(newKey3));
     }
 
@@ -182,7 +184,6 @@ public class TestEmptyDictionary {
         keys.put("key0", "value0");
         keys.put(1, new Pair(80, "Mendoza"));
         keys.put(new Pair("Valido", "Estupiñán"), 20);
-        Dictionary dict2 = new Dictionary();
 
         dictionary.update(keys);
         assertEquals("Tamaño incorrecto", SIZE+3, dictionary.length());
@@ -199,7 +200,11 @@ public class TestEmptyDictionary {
      */
     @Test
     public void testSetdefaultOne() {
-
+        dictionary.setdefault("key0", "value0");
+        assertEquals("Tamaño incorrecto", SIZE+1, dictionary.length());
+        dictionary.setdefault("key0", "value0");
+        assertEquals("Tamaño incorrecto", SIZE+1, dictionary.length());
+        assertEquals(dictionary.get("key0"), dictionary.setdefault("key0", "value0"));
     }
 
     /**
@@ -207,7 +212,12 @@ public class TestEmptyDictionary {
      */
     @Test
     public void testSetdefaultTwo() {
-
+        dictionary.setdefault("key0");
+        assertEquals("Tamaño incorrecto", SIZE+1, dictionary.length());
+        assertNull(dictionary.get("key0"));
+        dictionary.setdefault(new Pair("key1.1", "key1.2"));
+        assertEquals("Tamaño incorrecto", SIZE+2, dictionary.length());
+        assertNull(dictionary.get(new Pair("key1.1", "key1.2")));
     }
 
     /**
@@ -215,7 +225,16 @@ public class TestEmptyDictionary {
      */
     @Test
     public void testMerge() {
+        Dictionary dict2 = new Dictionary();
+        dict2.put("key0", new Pair("Antonio", "Méndez"));
+        dict2.put(1, "value1");
 
+        Dictionary dict3 = dictionary.merge(dict2);
+        assertEquals("Tamaño incorrecto", SIZE+2, dict3.length());
+
+        Dictionary dict4 = dictionary.merge(dict3);
+        dict4.put(new Pair("Mohamed", 90));
+        assertEquals("Tamaño incorrecto", SIZE+3, dict4.length());
     }
 
     /**
@@ -223,7 +242,17 @@ public class TestEmptyDictionary {
      */
     @Test
     public void testList() {
+        assertTrue(dictionary.list().equals(new ArrayList<>()));
 
+        dictionary.put(new Pair("Alejandro", 24), "value0");
+        assertEquals("Tamaño de la lista incorrecto", SIZE+1, dictionary.list().size());
+
+        ArrayList<Object> array = new ArrayList<>();
+        array.add(new Pair("Alejandro", 24));
+        assertEquals(array , dictionary.list());
+    
+        dictionary.put("key1", "value1");
+        assertEquals("Tamaño de la lista incorrecto", SIZE+2, dictionary.list().size());
     }
 
     /**

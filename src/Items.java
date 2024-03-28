@@ -1,9 +1,14 @@
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class Items implements Iterable<Pair>{
+public class Items implements Iterable<Pair>, ObjectView<Pair> {
     private final EntriesList entries;
     private final Dictionary dict;
+
+    public Items(EntriesList values, Dictionary dict) {
+        this.entries = values;
+        this.dict = dict;
+    }
 
     @Override
     public Iterator<Pair> iterator() {
@@ -12,11 +17,6 @@ public class Items implements Iterable<Pair>{
 
     public Iterable<Pair> reversed() {
         return new ItemsReversed(this);
-    }
-
-    public Items(EntriesList values, Dictionary dict) {
-        this.entries = values;
-        this.dict = dict;
     }
 
     public boolean contains(Pair p) {

@@ -525,4 +525,55 @@ public class TestNoResizeDictionary {
         assertTrue(items.contains(new Pair("Key 4",4)));
         assertFalse(items.contains(new Pair("Key 4",5)));
     }
+
+    /*
+     * Prueba de equals con un diccionario con claves-valor iguales.
+     */
+    @Test
+    public void TestEqualsSamePairs() {
+        Dictionary other = new Dictionary();
+        for(int i = 0; i < SIZE; i++) {
+            other.put("Key " + i, i);
+        }
+        assertEquals(d, other);
+    }
+
+    /*
+     * Prueba de equals con un diccionario con alguna clave diferente pero igual valores.
+     */
+    @Test
+    public void TestEqualsDifferentKeys() {
+        Dictionary other = new Dictionary();
+        other.put("Key" + 0, 0);
+        for(int i = 1; i < SIZE; i++) {
+            other.put("Key " + i, i);
+        }
+        assertNotEquals(d, other);
+    }
+
+    /*
+     * Prueba de equals con un diccionario con iguales claves, pero algún valor diferente.
+     */
+    @Test
+    public void TestEqualsDifferentValues() {
+        Dictionary other = new Dictionary();
+        other.put("Key " + 0, 5);
+        for(int i = 1; i < SIZE; i++) {
+            other.put("Key " + i, i);
+        }
+        assertNotEquals(d, other);
+    }
+
+    /*
+     * Prueba de equals con un diccionario con una entrada más.
+     */
+    @Test
+    public void TestEqualsDifferentLength() {
+        Dictionary other = new Dictionary();
+        for(int i = 0; i < SIZE + 1; i++) {
+            other.put("Key " + i, i);
+        }
+        assertEquals(d.length() + 1, other.length());
+        assertNotEquals(d, other);
+    }
 }

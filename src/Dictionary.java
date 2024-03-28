@@ -69,7 +69,7 @@ public class Dictionary implements Iterable<Object> {
     }
 
     private void addElement(Entry newEntry) {
-        if(isMutable(newEntry.getKey())) throw new TypeError(newEntry.getKey());
+        if(isHashable(newEntry.getKey())) throw new TypeError(newEntry.getKey());
         int hash = newEntry.getHash();
         int pseudoKey = hash & mask;
         boolean stay = true;
@@ -110,8 +110,9 @@ public class Dictionary implements Iterable<Object> {
         }
     }
 
-    private boolean isMutable(Object key) {
+    private boolean isHashable(Object key) {
         if(
+            key == null ||
             key instanceof List ||
             key instanceof Set ||
             key instanceof Map ||
@@ -122,7 +123,7 @@ public class Dictionary implements Iterable<Object> {
     }
 
     private int[] getElement(Object key) {
-        if(isMutable(key)) throw new TypeError(key);
+        if(isHashable(key)) throw new TypeError(key);
         int hash = key.hashCode();
         final int keyHash = hash;
         int pseudoKey = hash & mask;

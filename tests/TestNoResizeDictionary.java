@@ -381,4 +381,74 @@ public class TestNoResizeDictionary {
         d.put("Key 3", 3);
         assertTrue(ks.contains("Key 3"));
     }
+
+    /*
+     * Prueba de Values, iterador.
+     */
+    @Test
+    public void testValuesIterator() {
+        List<Integer> listTest = new ArrayList<>();
+        listTest.add(0);
+        listTest.add(1);
+        listTest.add(3);
+        int i = 0;
+        Values vs = d.values();
+        d.put("Key 3", 3);
+        d.del("Key 2");
+        for(Object v : vs) {
+            assertTrue(listTest.get(i).equals(v));
+            i++;
+        }
+    }
+
+    /*
+     * Prueba de Values reversed.
+     */
+    @Test
+    public void testValuesReversed() {
+        List<Integer> listTest = new ArrayList<>();
+        listTest.add(0);
+        listTest.add(1);
+        listTest.add(3);
+        Collections.reverse(listTest);
+        Values vs = d.values();
+        d.put("Key 3", 3);
+        d.del("Key 2");
+        int i = 0;
+        for(Object v : vs.reversed()) {
+            assertTrue(listTest.get(i).equals(v));
+            i++;
+        }
+    }
+
+    /*
+     * Prueba de Values length.
+     */
+    @Test
+    public void testValuesLength() {
+        Values vs = d.values();
+        assertEquals(d.length(), vs.length());
+        d.put("Key 3", 3);
+        assertEquals(d.length(), vs.length());
+        d.del("Key 1");
+        d.del("Key 2");
+        assertEquals(d.length(), vs.length());
+    }
+
+    /*
+     * Prueba de Values contains.
+     */
+    @Test
+    public void testValuesContains() {
+        Values vs = d.values();
+        d.put("Key 3",3);
+        for(Object k : d) {
+            assertTrue(vs.contains(d.get(k)));
+        }
+        String deletedKey = "Key 0";
+        d.del(deletedKey);
+        assertFalse(vs.contains(0));
+        d.put("Key 3",3);
+        assertTrue(vs.contains(3));
+    }
 }

@@ -294,6 +294,7 @@ public class TestNoResizeDictionary {
             assertTrue(listTest.get(i).equals(key));
             i++;
         }
+        assertEquals("Number of iterations must be equal to size of list",listTest.size(), i);
     }
 
     /*

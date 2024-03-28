@@ -17,6 +17,10 @@ public class Values implements Iterable<Object>{
         return new ValuesReversed(this);
     }
 
+    public int length() {
+        return entries.size();
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

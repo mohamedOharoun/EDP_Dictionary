@@ -1,30 +1,56 @@
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+/**
+ * The Items class represents the view of items (key-value pairs) returned when invoking dict.items() in Python.
+ * It implements both the Iterable and ObjectView interfaces, allowing iteration over the items
+ * of a dictionary and providing methods to interact with these items.
+ */
 public class Items implements Iterable<Pair>, ObjectView<Pair> {
     private final EntriesList entries;
     private final Dictionary dict;
 
-    public Items(EntriesList values, Dictionary dict) {
+    Items(EntriesList values, Dictionary dict) {
         this.entries = values;
         this.dict = dict;
     }
 
+    /**
+     * Returns an iterator over the items (key-value pairs) of the dictionary.
+     *
+     * @return An iterator over the items (key-value pairs) of the dictionary.
+     */
     @Override
     public Iterator<Pair> iterator() {
         return new ItemsIterator(this);
     }
 
+    /**
+     * Returns an iterable object for reverse iteration over the items of the dictionary.
+     *
+     * @return An iterable object for reverse iteration over the items of the dictionary.
+     */
     public Iterable<Pair> reversed() {
         return new ItemsReversed(this);
     }
 
+    /**
+     * Checks if the specified item (key-value pair) is contained in the dictionary.
+     *
+     * @param p The item (key-value pair) to check for containment.
+     * @return True if the item is contained in the dictionary, false otherwise.
+     */
     public boolean contains(Pair p) {
         if(!dict.contains(p.get(0))) return false;
         if(dict.get(p.get(0)).equals(p.get(1))) return true;
         return false;
     }
 
+    /**
+     * Returns the number of items (key-value pairs) in the dictionary.
+     *
+     * @return The number of items (key-value pairs) in the dictionary.
+     */
     public int length() {
         return entries.size();
     }
@@ -98,6 +124,11 @@ public class Items implements Iterable<Pair>, ObjectView<Pair> {
         }  
     }
 
+    /**
+     * Returns a string representation of the items view, formatted as dict_items([...]).
+     *
+     * @return A string representation of the items view.
+     */
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

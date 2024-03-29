@@ -1,28 +1,54 @@
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+/**
+ * The Keys class represents the view of keys returned when invoking dict.keys() in Python.
+ * It implements both the Iterable and ObjectView interfaces, allowing iteration over the keys
+ * of a dictionary and providing methods to interact with these keys.
+ */
 public class Keys implements Iterable<Object>, ObjectView<Object> {
     final private EntriesList entries;
     final private Dictionary dic;
 
-    public Keys(EntriesList values, Dictionary dic) {
+    Keys(EntriesList values, Dictionary dic) {
         this.entries = values;
         this.dic = dic;
     }
 
+    /**
+     * Returns an iterator over the keys of the dictionary.
+     *
+     * @return An iterator over the keys of the dictionary.
+     */
     @Override
     public Iterator<Object> iterator() {
         return new KeysIterator(this);
     }
 
+    /**
+     * Returns an iterable object for reverse iteration over the keys of the dictionary.
+     *
+     * @return An iterable object for reverse iteration over the keys of the dictionary.
+     */
     public Iterable<Object> reversed() {
         return new KeysReversed(this);
     }
 
+    /**
+     * Checks if the specified key is contained in the dictionary.
+     *
+     * @param k The key to check for containment.
+     * @return True if the key is contained in the dictionary, false otherwise.
+     */
     public boolean contains(Object k) {
         return dic.contains(k);
     }
 
+    /**
+     * Returns the number of keys in the dictionary.
+     *
+     * @return The number of keys in the dictionary.
+     */
     public int length() {
         return entries.size();
     }
@@ -97,6 +123,11 @@ public class Keys implements Iterable<Object>, ObjectView<Object> {
         }  
     }
 
+    /**
+     * Returns a string representation of the keys view, formatted as dict_keys([...]), if a key is a String or a Character, it will be sorrounded with simple quotes.
+     *
+     * @return A string representation of the keys view.
+     */
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

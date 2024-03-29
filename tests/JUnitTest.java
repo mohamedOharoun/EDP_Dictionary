@@ -1,6 +1,4 @@
 import static org.junit.Assert.*;
-
-import java.security.Key;
 import java.util.*;
 import org.junit.Test;
 
@@ -330,5 +328,29 @@ public class JUnitTest {
     
         assertNull(dict2.get("key1"));
         assertNotEquals(dictionary.get("key2"), dict2.get("key3"));
+     }
+
+     @Test
+     public void testUpdateIterableOfIterables() {
+        Dictionary d = new Dictionary();
+        List<List<Integer>> l = new ArrayList<>();
+        List<Integer> l1 = new ArrayList<>();
+        List<Integer> l2 = new ArrayList<>();
+        l1.add(10);
+        l1.add(11);
+        l2.add(20);
+        l2.add(2);
+        l.add(l1);
+        l.add(l2);
+        d.update(l);
+        assertEquals("{10: 11, 20: 2}", d.toString());
+        List<Integer> l3 = new ArrayList<>();
+        l3.add(10);
+        l3.add(11);
+        l3.add(20);
+        l.add(l3);
+        assertThrows(ValueError.class, () -> {
+            d.update(l);
+        });
      }
 }

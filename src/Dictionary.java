@@ -275,13 +275,33 @@ public class Dictionary implements Iterable<Object> {
     }
 
     /**
-     * This method inserts elements into the dictionary from an iterable of Pair objects.
+     * This method inserts elements into the dictionary from an iterable of Pair objects, or other iterable objects (or Array) of strictly size 2.
      *
-     * @param pairs Iterable of Pair objects.
+     * @param pairs Iterable of Pair objects or Iterable objects of size 2.
+     * @throws ValueError if any of the elements of the iterable is neither a Pair object nor an Iterable or Array of size 2.
      */
-    public void update(Iterable<Pair> pairs) {
-        for(Pair p : pairs) {
-            addElement(new Entry(p));
+    public void update(Iterable<?> pairs) {
+        int i = 0;
+        for(Object p : pairs) {
+            if(p == null) throw new ValueError(i, 1);
+            else if(p instanceof Pair) addElement(new Entry((Pair) p));
+            else if(p instanceof Iterable) {
+                Iterable<?> temp = (Iterable<?>) p;
+                final int lengthSequence = calculateIterableSize(temp);
+                if(lengthSequence != 2) throw new ValueError(i, lengthSequence);
+                Iterator<?> temp2 = temp.iterator();
+                put(temp2.next(), temp2.next());
+                System.out.println(this);
+            } 
+            else if(p.getClass().isArray()) {
+                Object[] temp = (Object[]) p;
+                if(temp.length != 2) throw new ValueError(i, temp.length);
+                put(temp[0], temp[1]);
+            }
+            else {
+                throw new ValueError(i, 1);
+            }
+            i++;
         }
     }
 

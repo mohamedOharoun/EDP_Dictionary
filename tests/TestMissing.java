@@ -27,3 +27,10 @@ public class TestMissing {
         assertEquals(0, ds.retrieve(0));
     }
 }
+
+class DummyDictionaryMissing extends Dictionary implements Missing {
+    @Override
+    public Object missing(Object key) {
+        return "Default from Missing";
+    }
+}

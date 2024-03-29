@@ -9,14 +9,14 @@ public class Dictionary implements Iterable<Object> {
     private final static Object UNUSED = null;
     private final static Integer DUMMY = -2;
     private final static double GROWTH_RATE = 2.0/3;
-    private final static int initialCapacity = 8;
+    private final static int INITIAL_CAPACITY = 8;
     private final IndexesList indexes = new IndexesList(null);
     private final EntriesList entries = new EntriesList(null);
     private int mask;
     private int index;
 
     public Dictionary() {
-        setDictionary(initialCapacity);   
+        setDictionary(INITIAL_CAPACITY);   
     }
 
     public Dictionary(Pair[] ps)  {
@@ -170,7 +170,7 @@ public class Dictionary implements Iterable<Object> {
     private static int calculateProperSize(int n) {
         int new_size = getUpperPowerOfTwo(n);
         if(new_size * GROWTH_RATE < n) new_size <<= 1;
-        if(new_size <= initialCapacity) return initialCapacity;
+        if(new_size <= INITIAL_CAPACITY) return INITIAL_CAPACITY;
         return new_size;
     }
 
@@ -487,7 +487,7 @@ public class Dictionary implements Iterable<Object> {
      * Este método elimina todos los elementos del diccionario.
      */
     public void clear() {
-        setDictionary(initialCapacity);
+        setDictionary(INITIAL_CAPACITY);
     }
 
     /**

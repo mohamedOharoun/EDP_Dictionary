@@ -346,14 +346,14 @@ public class TestEmptyDictionary {
     @Test
     public void testIterator() {
         int i = 0;
-        for (Object k : dictionary) {
+        for (@SuppressWarnings("unused") Object k : dictionary) {
             i++;
         }
         assertEquals(SIZE, i);
 
         dictionary.put("Uno", 1); dictionary.put("Dos", 2);
         i = 0;
-        for (Object k : dictionary) {
+        for (@SuppressWarnings("unused") Object k : dictionary) {
             i++;
         }
         assertEquals(SIZE+2, i);
@@ -365,7 +365,7 @@ public class TestEmptyDictionary {
     @Test
     public void testReversed() {
         int i = 0;
-        for (Object k : dictionary.reversed()) {
+        for (@SuppressWarnings("unused") Object k : dictionary.reversed()) {
             i++;
         }
         assertEquals(SIZE, i);

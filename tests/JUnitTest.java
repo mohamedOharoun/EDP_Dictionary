@@ -12,8 +12,8 @@ public class JUnitTest {
             dictionary.popitem();
         });
 
-        dictionary.put("key1", "value1");
-        dictionary.put("key2", "value2");
+        dictionary.put(new Pair(300.123, "12"), "value1");
+        dictionary.put("key2", new Pair(65, new Pair("Man", new Pair(23, 32))));
         dictionary.put("key3", "value3");
 
         int sizeBefore = dictionary.length();
@@ -39,9 +39,9 @@ public class JUnitTest {
     public void testCopy() {
         Dictionary dictionary = new Dictionary();
 
-        dictionary.put("key1", "value1");
-        dictionary.put("key2", "value2");
-        dictionary.put("key3", "value3");
+        dictionary.put("key1", "124972103586");
+        dictionary.put(new Pair("Key2.1", 2.2222), "value2");
+        dictionary.put("key3", new Pair(20, 20));
 
         Dictionary copia = dictionary.copy();
 
@@ -49,11 +49,11 @@ public class JUnitTest {
 
         assertEquals(dictionary.length(), copia.length());
         assertTrue(copia.contains("key1"));
-        assertTrue(copia.contains("key2"));
+        assertTrue(copia.contains(new Pair("Key2.1", 2.2222)));
         assertTrue(copia.contains("key3"));
-        assertEquals("value1", copia.get("key1"));
-        assertEquals("value2", copia.get("key2"));
-        assertEquals("value3", copia.get("key3"));
+        assertEquals("124972103586", copia.get("key1"));
+        assertEquals("value2", copia.get(new Pair("Key2.1", 2.2222)));
+        assertEquals(new Pair(20, 20), copia.get("key3"));
     }
 
     @Test
@@ -146,16 +146,16 @@ public class JUnitTest {
         Dictionary dictionary = new Dictionary();
 
         dictionary.put("key1", "value1");
-        dictionary.put("key2", "value2");
-        dictionary.put("key3", "value3");
+        dictionary.put(new Pair(202020202, "Valido"), "valute");
+        dictionary.put(3.12491725408230500, "value3");
 
         Iterator<Object> IteratorDictionary = dictionary.iterator();
         assertTrue(IteratorDictionary.hasNext());
         assertEquals("key1", IteratorDictionary.next());
         assertTrue(IteratorDictionary.hasNext());
-        assertEquals("key2", IteratorDictionary.next());
+        assertEquals(new Pair(202020202, "Valido"), IteratorDictionary.next());
         assertTrue(IteratorDictionary.hasNext());
-        assertEquals("key3", IteratorDictionary.next());
+        assertEquals(3.12491725408230500, IteratorDictionary.next());
         assertFalse(IteratorDictionary.hasNext());
     }
 
@@ -163,9 +163,9 @@ public class JUnitTest {
     public void testReversed() {
         Dictionary dictionary = new Dictionary();
 
-        dictionary.put("key1", "value1");
-        dictionary.put("key2", "value2");
-        dictionary.put("key3", "value3");
+        dictionary.put("key1", null);
+        dictionary.put(new Pair("Uno", 2), 800);
+        dictionary.put("key3", new Pair("Tres", "Tres"));
 
         Iterable<Object> reversedDictionary = dictionary.reversed();
 
@@ -173,7 +173,7 @@ public class JUnitTest {
         assertTrue(iterator.hasNext());
         assertEquals("key3", iterator.next());
         assertTrue(iterator.hasNext());
-        assertEquals("key2", iterator.next());
+        assertEquals(new Pair("Uno", 2), iterator.next());
         assertTrue(iterator.hasNext());
         assertEquals("key1", iterator.next());
         assertFalse(iterator.hasNext());
@@ -183,21 +183,22 @@ public class JUnitTest {
     public void testPut() {
         Dictionary dictionary = new Dictionary();
 
-        dictionary.put("key1", "value1");
-        dictionary.put("key2", "value2");
-        dictionary.put("key3", "value3");
+        dictionary.put(2152750, "value1");
+        dictionary.put(new Pair("Uno", new Pair("Dos", new Pair("Tres", 4))), "value2value2value2");
+        dictionary.put(12.3423, new Pair("Cinco", 6));
 
         // Verifico si los elementos se han metido correctamente al diccionario
-        assertTrue(dictionary.contains("key1"));
-        assertTrue(dictionary.contains("key2"));
-        assertTrue(dictionary.contains("key3"));
+        assertTrue(dictionary.contains(2152750));
+        assertTrue(dictionary.contains(new Pair("Uno", new Pair("Dos", new Pair("Tres", 4)))));
+        assertTrue(dictionary.contains(12.3423));
 
         assertEquals(3, dictionary.length());
 
         // Verifico que el valor de la clave es correcto
-        assertEquals("value1", dictionary.get("key1"));
-        assertEquals("value2", dictionary.get("key2"));
-        assertEquals("value3", dictionary.get("key3"));
+        assertEquals(null, dictionary.get("key1"));
+        assertEquals("value2value2value2", dictionary.get(new Pair("Uno", new Pair("Dos", new Pair("Tres", 4)))));
+        assertThrows(KeyError.class, () -> dictionary.retrieve("key2"));
+        assertEquals(new Pair("Cinco", 6), dictionary.get(12.3423));
     }
 
     @Test
@@ -205,7 +206,7 @@ public class JUnitTest {
         Dictionary dictionary = new Dictionary();
 
         // Creo tres objetos de tipo Pair.
-        Pair p1 = new Pair("key1", "value1");
+        Pair p1 = new Pair("key1", new Pair(20, 20));
         Pair p2 = new Pair(2, "value2");
         Pair p3 = new Pair(3.5, 3);
 
@@ -221,7 +222,7 @@ public class JUnitTest {
         assertTrue(dictionary.contains(2));
         assertTrue(dictionary.contains(3.5));
 
-        assertEquals("value1", dictionary.get("key1"));
+        assertEquals(new Pair(20, 20), dictionary.get("key1"));
         assertEquals(3, dictionary.get(3.5));
     }
 
@@ -230,14 +231,14 @@ public class JUnitTest {
         Dictionary dictionary = new Dictionary();
 
         // Inserto valores.
-        dictionary.put("key1", "value1");
+        dictionary.put("key1", null);
         dictionary.put("", 3);
         dictionary.put("key3", "value3");
         dictionary.put(new Pair("key4", "32"));
 
 
         // Verifico que el valor de la clave es correcto
-        assertEquals("value1", dictionary.retrieve("key1"));
+        assertEquals(null, dictionary.retrieve("key1"));
         assertEquals(3, dictionary.retrieve(""));
         assertEquals("value3", dictionary.retrieve("key3"));
         assertThrows(KeyError.class, () -> dictionary.retrieve("key5"));
@@ -277,7 +278,7 @@ public class JUnitTest {
         Dictionary dictionary = new Dictionary();
 
         // Inserto valores.
-        dictionary.put("key1", "value1");
+        dictionary.put("key1", null);
         dictionary.put("", 3);
         dictionary.put("key3", 5);
         dictionary.put(new Pair("key4", "32"));

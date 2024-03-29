@@ -1,6 +1,4 @@
 import static org.junit.Assert.*;
-
-import java.lang.reflect.Array;
 import java.util.*;
 import org.junit.Before;
 import org.junit.Test;
@@ -108,6 +106,9 @@ public class TestEmptyDictionary {
         assertEquals("Tamaño incorrecto", SIZE+1, dictionary.length());
         dictionary.put(new Pair(new Pair("Pepe", "García"), "value1"));
         assertEquals("Tamaño incorrecto", SIZE+2, dictionary.length());
+
+        
+        assertThrows(TypeError.class, () -> dictionary.put(null, "Ochoa"));
     }
 
     /**
@@ -260,7 +261,12 @@ public class TestEmptyDictionary {
      */
     @Test
     public void testEquals() {
+        Dictionary dict2 = new Dictionary();
+        assertTrue(dictionary.equals(dict2));
 
+        dict2.put(new Pair("Alejandro", "de Olózaga"), 805.3);
+        dictionary.put(new Pair("Alejandro", "de Olózaga"), 805.3);
+        assertTrue(dictionary.equals(dict2));
     }
 
     /**
@@ -268,7 +274,13 @@ public class TestEmptyDictionary {
      */
     @Test
     public void testValues() {
+        assertEquals("dict_values([])", dictionary.values().toString());
 
+        dictionary.put(new Pair("Álvaro", 300.0), new Pair(new Pair(12, 04), 28));
+        assertEquals("dict_values([((12, 4), 28)])", dictionary.values().toString());
+
+        dictionary.put("Key", null);
+        assertEquals("dict_values([((12, 4), 28), null])", dictionary.values().toString());   
     }
 
     /**
@@ -276,6 +288,12 @@ public class TestEmptyDictionary {
      */
     @Test
     public void testKeys() {
+        assertEquals("dict_keys([])", dictionary.keys().toString());
+
+        dictionary.put(new Pair("Álvaro", 300.0), new Pair(new Pair(12, 04), 28));
+        assertEquals("dict_keys([('Álvaro', 300.0)])", dictionary.keys().toString());
+        dictionary.put("300", null);
+        assertEquals("dict_keys([('Álvaro', 300.0), '300'])", dictionary.keys().toString());
 
     }
 
@@ -284,7 +302,12 @@ public class TestEmptyDictionary {
      */
     @Test
     public void testItems() {
+        assertEquals("dict_items([])", dictionary.items().toString());
 
+        dictionary.put(new Pair("Álvaro", 300.0), new Pair(new Pair(12, 04), 28));
+        assertEquals("dict_items([(('Álvaro', 300.0), ((12, 4), 28))])", dictionary.items().toString());
+        dictionary.put("300", null);
+        assertEquals("dict_items([(('Álvaro', 300.0), ((12, 4), 28)), ('300', null)])", dictionary.items().toString());
     }
 
     /**
@@ -292,7 +315,16 @@ public class TestEmptyDictionary {
      */
     @Test
     public void testClear() {
-
+        Dictionary dict2 = new Dictionary();
+        assertEquals(SIZE, dictionary.length());
+        dictionary.clear();
+        
+        assertEquals(SIZE, dictionary.length()); assertEquals(dict2.length(), dictionary.length());
+        dictionary.put("Ocho", 8); dictionary.put("Nueve", 9); dictionary.put("Diez", 10);
+        assertEquals(SIZE+3, dictionary.length());
+    
+        dictionary.clear();
+        assertEquals(SIZE, dictionary.length());
     }
 
     /**
@@ -300,7 +332,12 @@ public class TestEmptyDictionary {
      */
     @Test
     public void testContains() {
+        assertFalse(dictionary.contains(""));
+        dictionary.put(new Pair("Dos", 2), "value");
+        assertTrue(dictionary.contains(new Pair("Dos", 2)));
 
+        assertFalse(dictionary.values().contains("value0"));
+        assertTrue(dictionary.values().contains("value"));
     }
 
     /**
@@ -308,7 +345,18 @@ public class TestEmptyDictionary {
      */
     @Test
     public void testIterator() {
+        int i = 0;
+        for (Object k : dictionary) {
+            i++;
+        }
+        assertEquals(SIZE, i);
 
+        dictionary.put("Uno", 1); dictionary.put("Dos", 2);
+        i = 0;
+        for (Object k : dictionary) {
+            i++;
+        }
+        assertEquals(SIZE+2, i);
     }
 
     /**
@@ -316,6 +364,21 @@ public class TestEmptyDictionary {
      */
     @Test
     public void testReversed() {
+        int i = 0;
+        for (Object k : dictionary.reversed()) {
+            i++;
+        }
+        assertEquals(SIZE, i);
+
+        dictionary.put("Uno", 1); dictionary.put("Dos", 2); dictionary.put("Tres", 3);
+        
+        ArrayList<Pair> array = new ArrayList<>();
+        array.add(new Pair("Tres", 3)); array.add(new Pair("Dos", 2)); array.add(new Pair("Uno", 1));
+
+        for (Object k : dictionary.reversed()) {
+            assertEquals(array.get(i).get(0), k);
+            i++;
+        }
 
     }
 

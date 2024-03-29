@@ -3,3 +3,4 @@ Main.*
 *.class
 /bin
 /lib
+config.jdgenerator

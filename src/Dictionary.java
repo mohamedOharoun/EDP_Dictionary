@@ -8,9 +8,9 @@ import java.util.Set;
 /**
  * This class represents an implementation of the Python dict class. Keys that are not suitable for hashing may throw a TypeError exception.
  * 
- * @author Álvaro Rodríguez
- * @author Guillermo
- * @author Alejandro De Olózoga
+ * @author Álvaro Rodríguez Miranda
+ * @author Guillermo Santana Suárez
+ * @author Alejandro De Olózoga Ramírez
  * @author Mohamed O. Haroun Zarkik
  */
 public class Dictionary implements Iterable<Object> {

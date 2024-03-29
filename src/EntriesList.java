@@ -52,7 +52,6 @@ class EntriesList {
         final int numValues = size();
         while(i < capacity && numVisited < numValues) {
             if(get(i) != null) {
-                System.out.println(get(i));
                 numVisited++;
                 value =  get(i).getValue();
                 if(v == value) return true;

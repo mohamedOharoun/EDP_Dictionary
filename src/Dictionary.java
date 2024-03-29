@@ -41,11 +41,12 @@ public class Dictionary implements Iterable<Object> {
     }
 
     /**
-     * Constructor that initializes the dictionary from an iterable of Pair objects.
+     * Constructor that initializes the dictionary from an iterable of Pair objects or other Iterbles or Arrays of size 2.
      *
-     * @param iter Iterable of Pair objects.
+     * @param iter Iterable of Pair objects, or Iterables or Arrays of size 2.
+     * @throws ValueError if one of the Arrays or Iterable has a size different of 2.
      */
-    public Dictionary(Iterable<Pair> iter)  {
+    public Dictionary(Iterable<?> iter)  {
         this.setDictionary(calculateProperSize(calculateIterableSize(iter)));
         this.update(iter);
     }

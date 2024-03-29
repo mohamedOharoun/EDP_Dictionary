@@ -1,4 +1,6 @@
 import static org.junit.Assert.*;
+
+import java.security.Key;
 import java.util.*;
 import org.junit.Test;
 
@@ -313,6 +315,9 @@ public class JUnitTest {
         ArrayList<Object> keys = new ArrayList<Object>(3);
         keys.add("key1"); keys.add("key2"); keys.add(3);
 
+        Dictionary dict2 = new Dictionary();
+        dict2 = Dictionary.fromkeys(keys);
+    
         // Inserto los objetos al diccionario usando fromkeys(): valores por defecto a claves distintas..
         Dictionary dictionary = new Dictionary();
         dictionary = Dictionary.fromkeys(keys, 0);
@@ -322,5 +327,8 @@ public class JUnitTest {
         assertEquals(0, dictionary.get("key1"));
         assertEquals(0, dictionary.get("key2"));
         assertEquals("new_value", dictionary.pop(3));
+    
+        assertNull(dict2.get("key1"));
+        assertNotEquals(dictionary.get("key2"), dict2.get("key3"));
      }
 }

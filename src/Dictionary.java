@@ -291,7 +291,6 @@ public class Dictionary implements Iterable<Object> {
                 if(lengthSequence != 2) throw new ValueError(i, lengthSequence);
                 Iterator<?> temp2 = temp.iterator();
                 put(temp2.next(), temp2.next());
-                System.out.println(this);
             } 
             else if(p.getClass().isArray()) {
                 Object[] temp = (Object[]) p;

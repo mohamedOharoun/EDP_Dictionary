@@ -46,14 +46,18 @@ class EntriesList {
 
     boolean containsValue(Object v) {
         int i, numVisited;
+        Object value;
         i = numVisited = 0;
         final int capacity = capacity();
         final int numValues = size();
         while(i < capacity && numVisited < numValues) {
             if(get(i) != null) {
+                System.out.println(get(i));
                 numVisited++;
-                if(v == get(i).getValue()) return true;
-                if(get(i).getValue().equals(v)) return true;
+                value =  get(i).getValue();
+                if(v == value) return true;
+                if(value == null) continue;
+                if(value.equals(v)) return true;
             }
             i++;
         }

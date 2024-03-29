@@ -224,6 +224,7 @@ public class Dictionary implements Iterable<Object> {
      * @param value El valor del nuevo elemento.
      */
     public void put(Object key, Object value) {
+        if(key == null) throw new TypeError(null);
         addElement(new Entry(key, value));
     }
 
@@ -232,6 +233,7 @@ public class Dictionary implements Iterable<Object> {
      * @param p Objeto de tipo Pair.
      */
     public void put(Pair p) {
+        if(p.get(0) == null) throw new TypeError(null);
         addElement(new Entry(p));
     }
 

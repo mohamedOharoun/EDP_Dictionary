@@ -454,6 +454,17 @@ public class TestNoResizeDictionary {
     }
 
     /*
+     * Prueba de Values contains con null value.
+     */
+    @Test
+    public void testValuesContainsNull() {
+        Values vs = d.values();
+        assertFalse(vs.contains(null));
+        d.setdefault("setdefault");
+        assertTrue(vs.contains(null));
+    }
+
+    /*
      * Prueba de Items, iterador.
      */
     @Test

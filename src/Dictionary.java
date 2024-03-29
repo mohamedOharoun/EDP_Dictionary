@@ -5,6 +5,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * This class represents an implementation of the Python dict class. Keys that are not suitable for hashing may throw a TypeError exception.
+ * 
+ * @author Álvaro Rodríguez
+ * @author Guillermo
+ * @author Alejandro De Olózoga
+ * @author Mohamed O. Haroun Zarkik
+ */
 public class Dictionary implements Iterable<Object> {
     private final static Object UNUSED = null;
     private final static Integer DUMMY = -2;
@@ -15,25 +23,48 @@ public class Dictionary implements Iterable<Object> {
     private int mask;
     private int index;
 
+    /**
+     * Default constructor. Creates an empty dictionary with initial capacity.
+     */
     public Dictionary() {
         setDictionary(INITIAL_CAPACITY);   
     }
 
+    /**
+     * Constructor that initializes the dictionary from an array of Pair objects.
+     *
+     * @param ps Array of Pair objects.
+     */
     public Dictionary(Pair[] ps)  {
         this.setDictionary(calculateProperSize(ps.length));
         this.update(ps);
     }
 
+    /**
+     * Constructor that initializes the dictionary from an iterable of Pair objects.
+     *
+     * @param iter Iterable of Pair objects.
+     */
     public Dictionary(Iterable<Pair> iter)  {
         this.setDictionary(calculateProperSize(calculateIterableSize(iter)));
         this.update(iter);
     }
 
+    /**
+     * Constructor that initializes the dictionary from a Map object.
+     *
+     * @param m Map object containing key-value pairs.
+     */
     public Dictionary(Map<?, ?> m)  {
         this.setDictionary(calculateProperSize(m.size()));
         this.update(m);
     }
 
+    /**
+     * Constructor that initializes the dictionary from another Dictionary object.
+     *
+     * @param d Another Dictionary object to copy.
+     */
     public Dictionary(Dictionary d)  {
         this.setDictionary(calculateProperSize(d.length()));
         this.update(d);
@@ -43,6 +74,11 @@ public class Dictionary implements Iterable<Object> {
         setDictionary(n);
     }
 
+    /**
+     * Returns the number of entries in the dictionary.
+     *
+     * @return The number of entries.
+     */
     public int length() {
         return entries.size();
     }
@@ -185,9 +221,9 @@ public class Dictionary implements Iterable<Object> {
     }
 
     /**
-     * Este método realiza la copia de un diccionario (con claves y valores).
-     * 
-     * @return La copia del diccionario.
+     * This method creates a copy of the dictionary, original and copy are different objects.
+     *
+     * @return A copy of the dictionary.
      */
     public Dictionary copy() {
         Dictionary dicTemp = new Dictionary(calculateProperSize(entries.size()));
@@ -202,9 +238,9 @@ public class Dictionary implements Iterable<Object> {
     }
 
     /**
-     * El método elimina el último elemento del diccionario y lo devuelve.
-     * 
-     * @return El último elemento del diccionario (clave, valor).
+     * This method removes and returns the last element of the dictionary.
+     *
+     * @return The last element of the dictionary (key-value pair).
      */
     public Pair popitem() {
         if (entries.size() == 0) {
@@ -218,10 +254,10 @@ public class Dictionary implements Iterable<Object> {
     }
 
     /**
-     * Este método inserta un nuevo elemento al diccionario.
-     * 
-     * @param key La clave del nuevo elemento.
-     * @param value El valor del nuevo elemento.
+     * This method inserts a new element into the dictionary.
+     *
+     * @param key The key of the new element.
+     * @param value The value of the new element.
      */
     public void put(Object key, Object value) {
         if(isHashable(key)) throw new TypeError(null);
@@ -229,8 +265,9 @@ public class Dictionary implements Iterable<Object> {
     }
 
     /**
-     * Este método inserta al diccionario un nuevo elemento de tipo Pair.
-     * @param p Objeto de tipo Pair.
+     * This method inserts a new element into the dictionary using a Pair object.
+     *
+     * @param p Pair object representing the key-value pair.
      */
     public void put(Pair p) {
         if(isHashable(p.get(0))) throw new TypeError(null);
@@ -238,9 +275,9 @@ public class Dictionary implements Iterable<Object> {
     }
 
     /**
-     * Este método inserta al diccionario elementos a partir de un Objeto iterable de tipo Pair.
-     * 
-     * @param pairs El Array de elementos de tipo Pair.
+     * This method inserts elements into the dictionary from an iterable of Pair objects.
+     *
+     * @param pairs Iterable of Pair objects.
      */
     public void update(Iterable<Pair> pairs) {
         for(Pair p : pairs) {
@@ -249,9 +286,9 @@ public class Dictionary implements Iterable<Object> {
     }
 
     /**
-     * Este método inserta al diccionario elementos a partir de un Pair[].
-     * 
-     * @param pairs Pair[] que integra elementos de tipo Pair.
+     * This method inserts elements into the dictionary from an array of Pair objects.
+     *
+     * @param pairs Array of Pair objects.
      */
     public void update(Pair[] pairs) {
         for(Pair p : pairs) {
@@ -260,9 +297,9 @@ public class Dictionary implements Iterable<Object> {
     }
 
     /**
-     * Este método inserta al diccionario los elementos de otro diccionario.
-     * 
-     * @param dict El diccionario del cual insertar los elementos.
+     * This method inserts elements into the dictionary from another Dictionary object.
+     *
+     * @param dict Another Dictionary object.
      */
     public void update(Dictionary dict) {
         for(Pair p : dict.items()) {
@@ -270,6 +307,11 @@ public class Dictionary implements Iterable<Object> {
         }
     }
 
+    /**
+     * This method inserts elements into the dictionary from a Map object.
+     *
+     * @param m Map object containing key-value pairs.
+     */
     public void update(Map<?, ?> m) {
         for(Map.Entry<?, ?> e : m.entrySet()) {
             addElement(new Entry(e.getKey(), e.getValue()));
@@ -277,10 +319,11 @@ public class Dictionary implements Iterable<Object> {
     }
 
     /**
-     * Este método busca el valor de una clave en el diccionario.
-     * 
-     * @param key La clave que se quiere buscar.
-     * @return El valor de la clave.
+     * This method retrieves the value associated with a given key from the dictionary.
+     *
+     * @param key The key to retrieve the value for.
+     * @return The value associated with the key.
+     * @throws KeyError if the key is not found in the dictionary.
      */
     public Object retrieve(Object key) {
         int valueIndex = getElement(key)[0];
@@ -291,12 +334,25 @@ public class Dictionary implements Iterable<Object> {
         return entries.get(valueIndex).getValue();
     }
 
+    /**
+     * This method retrieves the value associated with a given key from the dictionary.
+     *
+     * @param key The key to retrieve the value for.
+     * @return The value associated with the key, or null if the key is not found.
+     */
     public Object get(Object key) {
         int valueIndex = getElement(key)[0];
         if(valueIndex == -1) return null;
         return entries.get(valueIndex).getValue();
     }
 
+    /**
+     * This method retrieves the value associated with a given key from the dictionary, or returns a default value if the key is not found.
+     *
+     * @param key The key to retrieve the value for.
+     * @param d The default value to return if the key is not found.
+     * @return The value associated with the key, or the default value if the key is not found.
+     */
     public Object get(Object key, Object d) {
         int valueIndex = getElement(key)[0];
         if(valueIndex == -1) return d;
@@ -304,19 +360,21 @@ public class Dictionary implements Iterable<Object> {
     }
 
     /**
-     * Este método elimina del diccionario el elemento asociado a una clave.
-     * 
-     * @param key La clave del elemento que se quiera eliminar.
+     * This method deletes the entry with the specified key from the dictionary.
+     *
+     * @param key The key of the entry to delete.
+     * @throws KeyError if the key is not found in the dictionary.
      */
     public void del(Object key) {
         if(deleteElement(key) != 0) throw new KeyError(key);
     }
 
     /**
-     * Este método elimina el elemento asociado a una clave.
-     * 
-     * @param key La clave asociada al elemento que se quiera eliminar.
-     * @return El valor del elemento eliminado.
+     * This method removes the entry with the specified key from the dictionary and returns its value.
+     *
+     * @param key The key of the entry to remove.
+     * @return The value of the removed entry.
+     * @throws KeyError if the key is not found in the dictionary.
      */
     public Object pop(Object key) {
         int valueIndex = getElement(key)[0];
@@ -326,6 +384,13 @@ public class Dictionary implements Iterable<Object> {
         return v;
     }
 
+    /**
+     * This method removes the entry with the specified key from the dictionary and returns its value, or returns a default value if the key is not found.
+     *
+     * @param key The key of the entry to remove.
+     * @param d The default value to return if the key is not found.
+     * @return The value of the removed entry, or the default value if the key is not found.
+     */
     public Object pop(Object key, Object d) {
         int valueIndex = getElement(key)[0];
         if(valueIndex == -1) return d;
@@ -334,6 +399,14 @@ public class Dictionary implements Iterable<Object> {
         return v;
     }
 
+    /**
+     * This method inserts a key-value pair into the dictionary if the key does not exist with the specified value, and returns the corresponding value.
+     * If the key already exists, returns its associated value.
+     *
+     * @param key The key of the entry to insert.
+     * @param d The default value to insert if the key does not exist.
+     * @return The value associated with the key.
+     */
     public Object setdefault(Object key, Object d) {
         int valueIndex = getElement(key)[0];
         if(valueIndex == -1) {
@@ -342,10 +415,24 @@ public class Dictionary implements Iterable<Object> {
         return entries.get(getElement(key)[0]).getValue(); 
     }
 
+    /**
+     * This method inserts a key-value pair into the dictionary if the key does not exist with null as a value, and returns the corresponding value.
+     * If the key already exists, returns its associated value.
+     *
+     * @param key The key of the entry to insert.
+     * @return The value associated with the key.
+     */
     public Object setdefault(Object key) {
         return setdefault(key, null); 
     }
 
+    /**
+     * This method creates a new dictionary with the specified keys and a default value.
+     *
+     * @param keys Array of keys for the new dictionary.
+     * @param value The default value to associate with the keys.
+     * @return A new dictionary with the specified keys and default value.
+     */
     public static Dictionary fromkeys(Object[] keys, Object value) {
         Dictionary newDict = new Dictionary(calculateProperSize(keys.length));
         for(Object k : keys) {
@@ -369,28 +456,30 @@ public class Dictionary implements Iterable<Object> {
     }
 
     /**
-     * 
-     * @param keys
-     * @return
+     * This method creates a new dictionary with the specified keys and null values.
+     *
+     * @param keys Array of keys for the new dictionary.
+     * @return A new dictionary with the specified keys and null values.
      */
     public static Dictionary fromkeys(Object[] keys) {
         return fromkeys(keys, null);
     }
 
     /**
-     * aa
-     * @param keys
-     * @return
+     * This method creates a new dictionary with the specified keys and null values.
+     *
+     * @param keys Iterable of keys for the new dictionary.
+     * @return A new dictionary with the specified keys and null values.
      */
     public static Dictionary fromkeys(Iterable<?> keys) {
         return fromkeys(keys, null);
     }
 
     /**
-     * Este método crea un diccionario nuevo a partir de concatenar dos.
-     * 
-     * @param other Otro diccionario que concatena al que se le aplica.
-     * @return El diccionario nuevo compuesto por los dos anteriores.
+     * This method creates a new dictionary by merging the current dictionary with another dictionary. If a key is present in both dictionaries, the value associated is from the other dictionary.
+     *
+     * @param other Another dictionary to merge.
+     * @return A new dictionary containing the merged key-value pairs.
      */
     public Dictionary merge(Dictionary other) {
         Dictionary newDict = this.copy();
@@ -400,6 +489,11 @@ public class Dictionary implements Iterable<Object> {
         return newDict;
     }
 
+    /**
+     * This method returns a list of keys in the dictionary.
+     *
+     * @return A list containing the keys of the dictionary.
+     */
     public List<Object> list() {
         List<Object> keys = new ArrayList<>(entries.size());
         Object temp;
@@ -410,6 +504,12 @@ public class Dictionary implements Iterable<Object> {
         return keys;
     }
 
+    /**
+     * This method compares the current dictionary with another object for equality. Two dictionary are equal if every key-value pair is the same, the order is not important.
+     *
+     * @param other The object to compare with.
+     * @return true if the objects are equal, false otherwise.
+     */
     @Override
     public boolean equals(Object other) {
         if(other == this) return true;
@@ -426,9 +526,9 @@ public class Dictionary implements Iterable<Object> {
     }
 
     /**
-     * Este método recorre los elementos del diccionario y los inserta en una StringBuilder().
-     * 
-     * @return El diccionario en formato String (la StringBuilder()).
+     * This method returns a string representation of the dictionary. Elements that are a String or a Character have simple quotes.
+     *
+     * @return A string representation of the dictionary.
      */
     @Override
     public String toString() {
@@ -459,44 +559,44 @@ public class Dictionary implements Iterable<Object> {
     }
 
     /**
-     * Este método accede a los valores del diccionario.
-     * 
-     * @return Los valores del diccionario.
+     * This method returns a Values object for accessing the values of the dictionary, which implements ObjectView.
+     *
+     * @return A Values object.
      */
     public Values values() {
         return new Values(entries);
     }
 
     /**
-     * Este método accede a las claves del diccionario.
-     * 
-     * @return Las claves del diccionario.
+     * This method returns a Keys object for accessing the keys of the dictionary, which implements ObjectView.
+     *
+     * @return A Keys object.
      */
     public Keys keys() {
         return new Keys(entries, this);
     }
 
     /**
-     * Este método accede a los elementos del diccionario.
-     * 
-     * @return Los elementos del diccionario (clave, valor).
+     * This method returns an Items object for accessing the key-value pairs of the dictionary, which implements ObjectView.
+     *
+     * @return An Items object.
      */
     public Items items() {
         return new Items(entries, this);
     }
 
     /**
-     * Este método elimina todos los elementos del diccionario.
+     * This method removes all entries from the dictionary.
      */
     public void clear() {
         setDictionary(INITIAL_CAPACITY);
     }
 
     /**
-     * Este método busca si una clave está ya en el diccionario.
-     * 
-     * @param key La clave que se busca.
-     * @return Valor booleano que indica si está en el diccionario.
+     * This method checks if a key is present in the dictionary.
+     *
+     * @param key The key to check for.
+     * @return true if the key is present, false otherwise.
      */
     public boolean contains(Object key) {
         return getElement(key)[0] == -1 ? false : true;
@@ -507,6 +607,11 @@ public class Dictionary implements Iterable<Object> {
         return new Keys(entries, this).iterator();
     }
 
+    /**
+     * This method returns an iterable object for iterating over the dictionary keys in reverse order.
+     *
+     * @return An iterable object for iterating over the dictionary in reverse order.
+     */
     public Iterable<Object> reversed() {
         return new Keys(entries, this).reversed();
     }
